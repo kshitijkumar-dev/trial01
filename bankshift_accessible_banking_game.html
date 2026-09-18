@@ -3,42 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BANKSHIFT — The Accessible Banking Challenge</title>
-  <!-- Modern Inter Font -->
+  <title>BANK HEIST: THE IMPOSSIBLE TRANSACTION</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   
   <style>
     :root {
-      --bg-main: #0b0f19;
-      --bg-surface: #131a29;
-      --bg-surface-elevated: #1e293b;
-      --bg-surface-hover: #26354a;
-      --border-color: #334155;
-      --border-focus: #38bdf8;
-      
-      --text-primary: #f8fafc;
-      --text-secondary: #cbd5e1;
+      --bg-base: #050811;
+      --bg-surface: #0c1322;
+      --bg-panel: #131c31;
+      --bg-panel-hover: #1c2a47;
+      --border-subtle: #1e293b;
+      --border-glow: #38bdf8;
+      --border-crimson: #f43f5e;
+      --border-emerald: #10b981;
+      --border-amber: #f59e0b;
+
+      --text-white: #f8fafc;
       --text-muted: #94a3b8;
+      --text-dim: #64748b;
       
-      --accent-blue: #38bdf8;
-      --accent-blue-bg: rgba(56, 189, 248, 0.12);
-      
-      --stat-money: #34d399;
-      --stat-security: #38bdf8;
-      --stat-trust: #f472b6;
-      --stat-reputation: #fbbf24;
-      
-      --positive: #22c55e;
-      --negative: #ef4444;
-      --neutral: #94a3b8;
-      
+      --cyan-neon: #38bdf8;
+      --emerald-neon: #34d399;
+      --amber-neon: #fbbf24;
+      --rose-neon: #fb7185;
+
       --focus-ring: 0 0 0 3px #ffffff, 0 0 0 6px #38bdf8;
-      --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+      --panel-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
     }
 
-    /* High-contrast accessible reset */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -46,25 +40,20 @@
     }
 
     body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background-color: var(--bg-main);
-      color: var(--text-primary);
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: var(--bg-base);
+      color: var(--text-white);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.04) 0%, transparent 50%);
     }
 
-    /* Strict Focus Styles for Blind/Keyboard Nav users */
-    *:focus-visible {
-      outline: none !important;
-      box-shadow: var(--focus-ring) !important;
-      z-index: 50;
-      position: relative;
-    }
-
-    /* Screen Reader Only Utility */
+    /* Screen Reader Exclusive Live Region */
     .sr-only {
       position: absolute;
       width: 1px;
@@ -77,401 +66,443 @@
       border: 0;
     }
 
-    /* Skip link for rapid screen reader navigation */
-    .skip-link {
+    /* WCAG AAA Focus Highlighting */
+    *:focus-visible {
+      outline: none !important;
+      box-shadow: var(--focus-ring) !important;
+      z-index: 50;
+      position: relative;
+    }
+
+    .skip-nav {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      background: #38bdf8;
-      color: #0b0f19;
-      padding: 12px 20px;
+      top: 8px;
+      left: 8px;
+      background: var(--cyan-neon);
+      color: #000;
       font-weight: 700;
-      border-radius: 8px;
-      z-index: 9999;
-      transform: translateY(-150%);
+      padding: 12px 18px;
+      border-radius: 6px;
+      z-index: 99999;
+      transform: translateY(-160%);
       transition: transform 0.2s ease;
       text-decoration: none;
     }
-    .skip-link:focus {
+    .skip-nav:focus {
       transform: translateY(0);
     }
 
-    /* Layout Containers */
-    .app-container {
+    .app-wrapper {
+      max-width: 1160px;
       width: 100%;
-      max-width: 1120px;
       margin: 0 auto;
-      padding: 1.25rem;
-      flex: 1;
+      padding: 1rem;
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 1.2rem;
+      flex: 1;
     }
 
-    /* Header styling */
-    header {
+    /* Top Command Header */
+    header.command-header {
       background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 1.25rem 1.5rem;
+      border: 1px solid #1e293b;
+      border-left: 4px solid var(--cyan-neon);
+      border-radius: 12px;
+      padding: 1rem 1.4rem;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
       gap: 1rem;
-      box-shadow: var(--shadow-card);
+      box-shadow: var(--panel-shadow);
     }
 
-    .brand-title {
-      display: flex;
-      flex-direction: column;
-    }
-    .brand-title h1 {
-      font-size: 1.75rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      color: #fff;
+    .brand-section h1 {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #ffffff;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.6rem;
     }
-    .brand-title p {
-      font-size: 0.875rem;
+    .brand-section p {
+      font-size: 0.8rem;
       color: var(--text-muted);
-      font-weight: 500;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
 
-    .accessibility-toolbar {
+    .toolbar-actions {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.6rem;
     }
 
-    .action-button {
-      background: var(--bg-surface-elevated);
-      color: var(--text-primary);
-      border: 1.5px solid var(--border-color);
+    .cyber-btn {
+      background: var(--bg-panel);
+      color: var(--text-white);
+      border: 1px solid #334155;
       border-radius: 8px;
-      padding: 0.6rem 1rem;
-      font-size: 0.875rem;
+      padding: 0.55rem 0.9rem;
+      font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      transition: all 0.15s ease-in-out;
+      gap: 0.45rem;
+      font-family: inherit;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
       user-select: none;
     }
-    .action-button:hover {
-      background: var(--bg-surface-hover);
-      border-color: var(--accent-blue);
-      color: #fff;
+    .cyber-btn:hover {
+      background: var(--bg-panel-hover);
+      border-color: var(--cyan-neon);
     }
-    .action-button:active {
-      transform: scale(0.98);
+    .cyber-btn:active {
+      transform: scale(0.97);
     }
-    .action-button.active {
-      background: var(--accent-blue-bg);
-      border-color: var(--accent-blue);
-      color: var(--accent-blue);
+    .cyber-btn.active {
+      border-color: var(--cyan-neon);
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--cyan-neon);
     }
 
-    /* Key indicator pills */
-    .key-badge {
-      display: inline-block;
-      background: #0f172a;
+    .keycap {
+      background: #090e18;
       border: 1px solid #475569;
-      color: #f8fafc;
+      color: #e2e8f0;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      padding: 0.15rem 0.45rem;
+      padding: 0.12rem 0.45rem;
       border-radius: 4px;
+      line-height: 1.2;
     }
 
-    /* Dashboard Stats Grid */
-    .stats-bar {
+    /* Live Voice Subtitle Bar for Deaf Accessibility */
+    .caption-box {
+      background: #080d19;
+      border: 1.5px solid #1e3a8a;
+      border-radius: 10px;
+      padding: 0.75rem 1.15rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+    }
+    .caption-icon {
+      color: var(--cyan-neon);
+      flex-shrink: 0;
+      font-size: 1.1rem;
+      margin-top: 0.1rem;
+    }
+    .caption-body {
+      flex: 1;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      color: #e2e8f0;
+    }
+    .caption-tag {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--cyan-neon);
+      font-weight: 700;
+      font-size: 0.75rem;
+      margin-right: 0.5rem;
+      text-transform: uppercase;
+    }
+
+    /* Resource Telemetry Cards */
+    .telemetry-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 0.85rem;
     }
 
-    .stat-card {
+    .telemetry-card {
       background: var(--bg-surface);
-      border: 1.5px solid var(--border-color);
-      border-radius: 12px;
-      padding: 1.15rem 1.25rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 0.9rem 1.1rem;
       position: relative;
-      overflow: hidden;
-      transition: border-color 0.2s ease;
+      transition: border-color 0.2s;
     }
-    .stat-card.updated {
-      animation: pulseHighlight 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    .telemetry-card.updated {
+      animation: alertFlash 0.7s ease-out;
     }
-    @keyframes pulseHighlight {
-      0% { border-color: var(--border-focus); transform: scale(1.02); }
-      100% { border-color: var(--border-color); transform: scale(1); }
+    @keyframes alertFlash {
+      0% { border-color: #ffffff; transform: translateY(-2px); }
+      100% { border-color: var(--border-subtle); transform: translateY(0); }
     }
 
-    .stat-label-row {
+    .telemetry-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.35rem;
     }
-    .stat-name {
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: var(--text-secondary);
+    .telemetry-title {
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
       text-transform: uppercase;
+      font-weight: 700;
       letter-spacing: 0.04em;
     }
-    .stat-value {
-      font-size: 1.5rem;
-      font-weight: 800;
+    .telemetry-delta {
+      font-size: 0.75rem;
       font-family: 'JetBrains Mono', monospace;
-      letter-spacing: -0.02em;
-    }
-
-    .stat-delta {
-      font-size: 0.8rem;
       font-weight: 700;
-      padding: 0.1rem 0.4rem;
+      padding: 0.1rem 0.35rem;
       border-radius: 4px;
-      display: inline-block;
-      margin-left: 0.5rem;
     }
-    .stat-delta.positive {
-      background: rgba(34, 197, 94, 0.2);
-      color: #4ade80;
+    .telemetry-delta.pos {
+      background: rgba(52, 211, 153, 0.2);
+      color: var(--emerald-neon);
     }
-    .stat-delta.negative {
-      background: rgba(239, 68, 68, 0.2);
-      color: #f87171;
+    .telemetry-delta.neg {
+      background: rgba(251, 113, 133, 0.2);
+      color: var(--rose-neon);
     }
-    .stat-delta.zero {
+    .telemetry-delta.hidden {
       display: none;
     }
 
-    .meter-container {
-      width: 100%;
-      height: 8px;
-      background: #0f172a;
-      border-radius: 9999px;
+    .telemetry-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .telemetry-track {
+      height: 6px;
+      background: #090e18;
+      border-radius: 999px;
+      margin-top: 0.5rem;
       overflow: hidden;
-      margin-top: 0.6rem;
       border: 1px solid #1e293b;
     }
-    .meter-fill {
+    .telemetry-fill {
       height: 100%;
-      transition: width 0.4s ease-out;
+      border-radius: 999px;
+      transition: width 0.4s ease;
     }
 
-    /* Live Speech / Transcript Display Bar (Deaf Accessibility) */
-    .transcript-bar {
-      background: #0f172a;
-      border: 1.5px solid #2563eb;
-      border-radius: 10px;
-      padding: 0.85rem 1.25rem;
-      display: flex;
-      align-items: flex-start;
-      gap: 0.85rem;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
-    }
-    .transcript-icon {
-      flex-shrink: 0;
-      margin-top: 0.15rem;
-      color: #60a5fa;
-    }
-    .transcript-content {
-      flex: 1;
-      font-size: 0.925rem;
-      line-height: 1.45;
-      color: #f1f5f9;
-    }
-    .transcript-tag {
-      display: inline-block;
-      font-weight: 700;
-      font-size: 0.75rem;
-      color: #93c5fd;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-right: 0.5rem;
-    }
-
-    /* Main Gameplay Scenario Card */
-    .gameplay-area {
+    /* Main Operations Area */
+    main.ops-screen {
       background: var(--bg-surface);
-      border: 1.5px solid var(--border-color);
+      border: 1px solid var(--border-subtle);
       border-radius: 14px;
-      padding: 1.75rem;
-      box-shadow: var(--shadow-card);
+      padding: 1.6rem;
+      min-height: 480px;
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 1.4rem;
+      box-shadow: var(--panel-shadow);
+      position: relative;
     }
 
-    .round-meta-header {
+    /* Cinematic Round Header */
+    .round-indicator-bar {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 1rem;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 1rem;
+      gap: 0.8rem;
+      padding-bottom: 0.9rem;
+      border-bottom: 1px solid #1e293b;
     }
-
-    .round-pill {
-      background: var(--accent-blue-bg);
-      border: 1px solid var(--accent-blue);
-      color: var(--accent-blue);
-      font-weight: 800;
-      font-size: 0.95rem;
-      padding: 0.35rem 0.85rem;
-      border-radius: 9999px;
-      letter-spacing: 0.05em;
-    }
-
-    .risk-badge {
-      font-size: 0.8rem;
+    .round-tag {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid var(--cyan-neon);
+      color: var(--cyan-neon);
+      font-family: 'Chakra Petch', sans-serif;
       font-weight: 700;
-      padding: 0.3rem 0.75rem;
+      font-size: 0.92rem;
+      padding: 0.25rem 0.75rem;
       border-radius: 6px;
-      text-transform: uppercase;
       letter-spacing: 0.05em;
-      border: 1px solid transparent;
     }
-    .risk-low { background: rgba(34, 197, 94, 0.15); color: #4ade80; border-color: rgba(34, 197, 94, 0.4); }
-    .risk-medium { background: rgba(251, 191, 36, 0.15); color: #fde047; border-color: rgba(251, 191, 36, 0.4); }
-    .risk-high { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: rgba(239, 68, 68, 0.4); }
-    .risk-critical { background: rgba(225, 29, 72, 0.25); color: #fda4af; border-color: #e11d48; font-weight: 900; }
+    .threat-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .threat-extreme {
+      background: rgba(244, 63, 94, 0.2);
+      border: 1px solid var(--rose-neon);
+      color: var(--rose-neon);
+      animation: alertPulse 1.5s infinite alternate;
+    }
+    .threat-elevated {
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid var(--amber-neon);
+      color: var(--amber-neon);
+    }
+    @keyframes alertPulse {
+      0% { opacity: 0.8; }
+      100% { opacity: 1; box-shadow: 0 0 10px rgba(244, 63, 94, 0.4); }
+    }
 
-    .scenario-title {
-      font-size: 1.5rem;
-      font-weight: 800;
+    .situation-box h2 {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1.55rem;
+      font-weight: 700;
       color: #ffffff;
-      line-height: 1.25;
+      margin-bottom: 0.5rem;
     }
-    .scenario-description {
+    .situation-box p.lead-story {
+      color: #cbd5e1;
       font-size: 1.05rem;
-      color: var(--text-secondary);
       line-height: 1.6;
     }
 
-    /* Options Selection List */
-    .options-grid {
+    /* Interactive Data / Evidence Cards inside round */
+    .intel-dossier {
+      background: #080d19;
+      border: 1px solid #1e293b;
+      border-left: 3px solid var(--amber-neon);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+      color: #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .intel-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.5rem;
+    }
+    .intel-key {
+      color: var(--text-muted);
+    }
+    .intel-val {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    /* Decision Choice Cards */
+    .choices-container {
       display: flex;
       flex-direction: column;
       gap: 0.85rem;
     }
 
-    .option-card {
-      background: var(--bg-surface-elevated);
-      border: 2px solid var(--border-color);
-      border-radius: 12px;
-      padding: 1.15rem 1.25rem;
-      text-align: left;
+    .choice-card {
+      background: var(--bg-panel);
+      border: 1.5px solid #334155;
+      border-radius: 10px;
+      padding: 1.05rem 1.25rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 1.1rem;
-      color: var(--text-primary);
-      width: 100%;
+      color: var(--text-white);
+      text-align: left;
       font-family: inherit;
-      transition: all 0.15s ease-in-out;
-      position: relative;
+      width: 100%;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
     }
-    .option-card:hover {
-      background: var(--bg-surface-hover);
+    .choice-card:hover {
+      background: var(--bg-panel-hover);
       border-color: #64748b;
     }
-    .option-card.selected {
-      border-color: var(--accent-blue);
-      background: rgba(56, 189, 248, 0.12);
-      box-shadow: 0 0 0 1px var(--accent-blue);
+    .choice-card.selected {
+      border-color: var(--cyan-neon);
+      background: rgba(56, 189, 248, 0.14);
+      box-shadow: 0 0 0 1px var(--cyan-neon);
     }
 
-    .option-number-badge {
-      width: 38px;
-      height: 38px;
+    .choice-badge {
+      width: 36px;
+      height: 36px;
+      background: #090e18;
+      border: 1px solid #475569;
       border-radius: 8px;
-      background: #0f172a;
-      border: 1.5px solid #475569;
-      color: #ffffff;
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 800;
-      font-size: 1.1rem;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #ffffff;
       flex-shrink: 0;
     }
-    .option-card.selected .option-number-badge {
-      background: var(--accent-blue);
-      border-color: var(--accent-blue);
-      color: #0b0f19;
+    .choice-card.selected .choice-badge {
+      background: var(--cyan-neon);
+      color: #050811;
+      border-color: var(--cyan-neon);
     }
 
-    .option-text-container {
+    .choice-content {
       flex: 1;
     }
-    .option-label {
-      font-size: 1.05rem;
+    .choice-heading {
+      font-size: 1.02rem;
       font-weight: 700;
       color: #ffffff;
       margin-bottom: 0.2rem;
     }
-    .option-tradeoff {
+    .choice-sub {
       font-size: 0.85rem;
       color: var(--text-muted);
-      font-weight: 500;
     }
 
-    /* Decision Confirmation / Action Bar */
-    .controls-footer {
+    /* Decision Confirmation Strip */
+    .action-strip {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
       gap: 1rem;
       padding-top: 1rem;
-      border-top: 1px solid var(--border-color);
+      border-top: 1px solid #1e293b;
     }
 
-    .confirm-btn {
+    .btn-execute {
       background: #0284c7;
+      border: 1.5px solid var(--cyan-neon);
       color: #ffffff;
-      border: 2px solid #38bdf8;
+      font-family: 'Chakra Petch', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: 0.8rem 1.8rem;
       border-radius: 8px;
-      padding: 0.85rem 1.85rem;
-      font-size: 1rem;
-      font-weight: 800;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 0.75rem;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
-      transition: all 0.15s ease;
+      gap: 0.65rem;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+      transition: background 0.15s, transform 0.1s;
     }
-    .confirm-btn:hover:not(:disabled) {
+    .btn-execute:hover {
       background: #0369a1;
       transform: translateY(-1px);
     }
-    .confirm-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-      box-shadow: none;
-      border-color: #475569;
-      background: #1e293b;
+    .btn-execute:active {
+      transform: scale(0.98);
     }
 
-    /* Consequence Resolution Box */
-    .resolution-card {
-      background: #0f172a;
-      border: 2px solid #38bdf8;
+    /* Consequence & Clue Reveal Section */
+    .consequence-panel {
+      background: #090e18;
+      border: 2px solid var(--cyan-neon);
       border-radius: 12px;
       padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
       animation: fadeIn 0.25s ease-out;
     }
     @keyframes fadeIn {
@@ -479,931 +510,1326 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .resolution-header {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: #38bdf8;
-      margin-bottom: 0.75rem;
+    .consequence-title {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1.3rem;
+      color: var(--cyan-neon);
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.6rem;
     }
-    .resolution-narrative {
+    .consequence-narrative {
       font-size: 1.05rem;
-      color: #f1f5f9;
       line-height: 1.6;
-      margin-bottom: 1.25rem;
+      color: #f1f5f9;
     }
 
-    .impact-badges-container {
+    .clue-discovery-banner {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1.5px solid var(--amber-neon);
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    .clue-icon {
+      font-size: 1.4rem;
+      color: var(--amber-neon);
+      flex-shrink: 0;
+    }
+    .clue-header {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: var(--amber-neon);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.2rem;
+    }
+    .clue-text {
+      font-size: 0.96rem;
+      color: #fef08a;
+      font-weight: 500;
+    }
+
+    .resource-pills-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.6rem;
-      margin-bottom: 1.25rem;
+      gap: 0.55rem;
     }
-    .impact-pill {
-      font-size: 0.85rem;
+    .pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
       font-weight: 700;
-      padding: 0.35rem 0.75rem;
+      padding: 0.28rem 0.65rem;
       border-radius: 6px;
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      border: 1px solid transparent;
+      gap: 0.35rem;
     }
-    .impact-positive {
-      background: rgba(34, 197, 94, 0.15);
-      color: #4ade80;
-      border-color: rgba(34, 197, 94, 0.4);
+    .pill-green {
+      background: rgba(52, 211, 153, 0.15);
+      border: 1px solid var(--emerald-neon);
+      color: var(--emerald-neon);
     }
-    .impact-negative {
-      background: rgba(239, 68, 68, 0.15);
-      color: #f87171;
-      border-color: rgba(239, 68, 68, 0.4);
+    .pill-red {
+      background: rgba(251, 113, 133, 0.15);
+      border: 1px solid var(--rose-neon);
+      color: var(--rose-neon);
     }
-    .impact-neutral {
+    .pill-gray {
       background: rgba(148, 163, 184, 0.15);
-      color: #cbd5e1;
-      border-color: rgba(148, 163, 184, 0.3);
+      border: 1px solid #475569;
+      color: #94a3b8;
     }
 
-    /* Shortcuts bar footer */
-    .shortcuts-reminder {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
+    /* Suspect Dossier Display Cards */
+    .suspects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    .suspect-card {
+      background: var(--bg-panel);
+      border: 2px solid #334155;
       border-radius: 10px;
-      padding: 0.85rem 1.25rem;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      gap: 1.25rem;
-      font-size: 0.825rem;
-      color: var(--text-muted);
-    }
-    .shortcut-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    /* Game Over / Summary Screen */
-    .gameover-container {
-      background: var(--bg-surface);
-      border: 2px solid var(--accent-blue);
-      border-radius: 16px;
-      padding: 2.25rem 2rem;
-      text-align: center;
-      box-shadow: var(--shadow-card);
+      padding: 1.15rem;
+      cursor: pointer;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 1.5rem;
+      gap: 0.75rem;
+      text-align: left;
+      font-family: inherit;
+      color: var(--text-white);
+      transition: border-color 0.2s, background 0.2s;
     }
-    .gameover-badge {
-      background: var(--accent-blue-bg);
-      color: var(--accent-blue);
-      border: 1px solid var(--accent-blue);
-      padding: 0.4rem 1rem;
-      border-radius: 9999px;
-      font-weight: 800;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+    .suspect-card:hover {
+      background: var(--bg-panel-hover);
+      border-color: #64748b;
     }
-    .final-title {
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: #ffffff;
-      line-height: 1.2;
-    }
-    .final-score-box {
-      background: #0f172a;
-      border: 2px solid #334155;
-      border-radius: 12px;
-      padding: 1.25rem 2.5rem;
-      margin: 0.5rem 0;
-    }
-    .final-score-label {
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .final-score-num {
-      font-size: 3rem;
-      font-weight: 800;
-      color: #38bdf8;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .final-verdict-title {
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: #fbbf24;
-      margin-bottom: 0.5rem;
-    }
-    .final-summary-text {
-      max-width: 680px;
-      color: var(--text-secondary);
-      font-size: 1.05rem;
-      line-height: 1.6;
-    }
-    .final-stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-      width: 100%;
-      max-width: 720px;
-      margin: 1rem 0;
-    }
-    @media (max-width: 640px) {
-      .final-stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    .final-stat-box {
-      background: var(--bg-surface-elevated);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 1rem;
-    }
-    .final-stat-val {
-      font-size: 1.35rem;
-      font-weight: 800;
-      font-family: 'JetBrains Mono', monospace;
-      color: #ffffff;
+    .suspect-card.selected {
+      border-color: var(--rose-neon);
+      background: rgba(244, 63, 94, 0.12);
+      box-shadow: 0 0 0 1px var(--rose-neon);
     }
 
-    /* Modal / Help Overlay */
-    .help-modal {
+    .suspect-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .suspect-name {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .suspect-role {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--cyan-neon);
+      font-weight: 600;
+    }
+    .suspect-detail {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+    .suspect-alibi {
+      background: #090e18;
+      border-left: 2px solid #64748b;
+      padding: 0.4rem 0.65rem;
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Modal / Evidence Overlay */
+    .overlay-modal {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(3, 7, 18, 0.85);
+      backdrop-filter: blur(4px);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 1rem;
       z-index: 1000;
     }
-    .help-modal-box {
+    .modal-box {
       background: var(--bg-surface);
-      border: 2px solid var(--border-focus);
+      border: 2px solid var(--cyan-neon);
       border-radius: 14px;
-      max-width: 600px;
+      max-width: 660px;
       width: 100%;
-      padding: 1.75rem;
-      color: #f8fafc;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+    }
+    .modal-head {
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid #1e293b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-head h3 {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1.35rem;
+      color: var(--cyan-neon);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .modal-content {
+      padding: 1.5rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .modal-foot {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid #1e293b;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    /* Introduction & Endgame Screens */
+    .intro-hero {
+      text-align: center;
+      max-width: 780px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.4rem;
+      padding: 2rem 0;
+    }
+    .time-alert-stamp {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      color: var(--rose-neon);
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px solid var(--rose-neon);
+      padding: 0.35rem 1.1rem;
+      border-radius: 999px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+    }
+    .hero-title {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, #ffffff 40%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc {
+      font-size: 1.15rem;
+      color: #cbd5e1;
+      line-height: 1.7;
+    }
+
+    .threat-parameters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.8rem;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+    .param-card {
+      background: #090e18;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 0.85rem;
+      text-align: center;
+    }
+    .param-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .param-val {
+      font-size: 1.1rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      color: #ffffff;
+      margin-top: 0.2rem;
+    }
+
+    /* Final Debrief Scoreboard */
+    .debrief-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: center;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 1rem 0;
+    }
+    .verdict-box {
+      background: #090e18;
+      border: 2px solid var(--cyan-neon);
+      border-radius: 12px;
+      padding: 1.5rem 2.5rem;
+      width: 100%;
+    }
+    .verdict-title {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    .score-banner {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: var(--cyan-neon);
+    }
+    .stats-breakdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.8rem;
+      width: 100%;
+    }
+    @media (max-width: 640px) {
+      .hero-title { font-size: 2.1rem; }
+      .stats-breakdown-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* Keyboard Shortcuts Footer Bar */
+    footer.shortcuts-footer {
+      background: var(--bg-surface);
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 0.75rem 1.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .shortcut-cluster {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
     }
   </style>
 </head>
 <body>
 
-  <!-- Skip link for Screen Readers -->
-  <a href="#main-game-content" class="skip-link">Skip to banking decisions</a>
+  <!-- Screen Reader Navigation Skip -->
+  <a href="#ops-main-screen" class="skip-nav">Skip to Operations Console</a>
 
-  <!-- ARIA Live Announcements for Blind Screen Readers -->
-  <div id="sr-announcements" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
+  <!-- Non-visual ARIA Live Region for Screen Readers -->
+  <div id="sr-live" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
 
-  <div class="app-container">
-    
-    <header role="banner">
-      <div class="brand-title">
+  <div class="app-wrapper">
+
+    <!-- Top Command Center Header -->
+    <header class="command-header" role="banner">
+      <div class="brand-section">
         <h1>
-          <span>🏛️</span>
-          <span>BANKSHIFT</span>
+          <span aria-hidden="true">🛡️</span>
+          <span>BANK HEIST</span>
         </h1>
-        <p>The Accessible Banking Challenge • Universal Accessibility</p>
+        <p>THE IMPOSSIBLE TRANSACTION • FINANCIAL THREAT INTELLIGENCE</p>
       </div>
 
-      <div class="accessibility-toolbar" role="toolbar" aria-label="Accessibility and game tools">
-        <button id="tts-toggle-btn" class="action-button active" aria-pressed="true" title="Toggle automatic speech narration (Press S)">
+      <div class="toolbar-actions" role="toolbar" aria-label="Accessibility and intelligence controls">
+        <button id="tts-toggle" class="cyber-btn active" aria-pressed="true" title="Toggle automatic speech narration (Shortcut: S)">
           <span id="tts-icon" aria-hidden="true">🔊</span>
-          <span>Speech: <strong id="tts-status-text">ON</strong></span>
-          <span class="key-badge">S</span>
+          <span>Audio: <strong id="tts-label">ON</strong></span>
+          <span class="keycap">S</span>
         </button>
 
-        <button id="repeat-btn" class="action-button" title="Repeat situation and choices aloud (Press R)">
+        <button id="btn-repeat" class="cyber-btn" title="Repeat situation and choices aloud (Shortcut: R)">
           <span aria-hidden="true">🔄</span>
-          <span>Repeat Info</span>
-          <span class="key-badge">R</span>
+          <span>Repeat</span>
+          <span class="keycap">R</span>
         </button>
 
-        <button id="help-btn" class="action-button" title="View keyboard controls & instructions (Press H)">
+        <button id="btn-evidence-modal" class="cyber-btn" title="Inspect unlocked clues (Shortcut: E)">
+          <span aria-hidden="true">📂</span>
+          <span>Evidence (<strong id="evidence-counter-btn">0</strong>)</span>
+          <span class="keycap">E</span>
+        </button>
+
+        <button id="btn-help-modal" class="cyber-btn" title="Controls and manual (Shortcut: H)">
           <span aria-hidden="true">⌨️</span>
-          <span>Controls</span>
-          <span class="key-badge">H</span>
+          <span>Help</span>
+          <span class="keycap">H</span>
         </button>
       </div>
     </header>
 
-    <section class="transcript-bar" aria-label="Live Audio Transcript">
-      <div class="transcript-icon" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        </svg>
-      </div>
-      <div class="transcript-content">
-        <span class="transcript-tag">Audio Transcript</span>
-        <span id="live-caption-text">Welcome to BANKSHIFT. Initializing your banking dashboard...</span>
+    <!-- Subtitle Bar (WCAG Deaf Player Priority) -->
+    <section class="caption-box" aria-label="Live Synchronized Subtitles">
+      <div class="caption-icon" aria-hidden="true">💬</div>
+      <div class="caption-body">
+        <span class="caption-tag">Live Audio Caption</span>
+        <span id="caption-text">Welcome, Officer. Initializing secure cyber-banking operations network...</span>
       </div>
     </section>
 
-    <section class="stats-bar" aria-label="Current Bank Resources" id="stats-section">
+    <!-- Financial Telemetry Deck -->
+    <section class="telemetry-grid" aria-label="Bank Asset Indicators" id="telemetry-section">
       
-      <!-- Money Card -->
-      <div class="stat-card" id="card-money">
-        <div class="stat-label-row">
-          <span class="stat-name">Capital (Money)</span>
-          <span class="stat-delta zero" id="delta-money">+₹0</span>
+      <!-- Bank Funds -->
+      <div class="telemetry-card" id="card-funds">
+        <div class="telemetry-top">
+          <span class="telemetry-title">💰 Bank Funds</span>
+          <span class="telemetry-delta hidden" id="delta-funds">+₹0</span>
         </div>
-        <div class="stat-value" style="color: var(--stat-money);">
-          <span id="val-money">₹10,000</span>
-        </div>
-        <div class="meter-container" aria-hidden="true">
-          <div class="meter-fill" id="meter-money" style="width: 50%; background-color: var(--stat-money);"></div>
+        <div class="telemetry-val" style="color: var(--emerald-neon);" id="val-funds">₹10.00 Cr</div>
+        <div class="telemetry-track" aria-hidden="true">
+          <div class="telemetry-fill" id="fill-funds" style="width: 100%; background: var(--emerald-neon);"></div>
         </div>
       </div>
 
-      <!-- Security Card -->
-      <div class="stat-card" id="card-security">
-        <div class="stat-label-row">
-          <span class="stat-name">Bank Security</span>
-          <span class="stat-delta zero" id="delta-security">+0</span>
+      <!-- Bank Security -->
+      <div class="telemetry-card" id="card-security">
+        <div class="telemetry-top">
+          <span class="telemetry-title">🛡️ Security Health</span>
+          <span class="telemetry-delta hidden" id="delta-security">+0</span>
         </div>
-        <div class="stat-value" style="color: var(--stat-security);">
-          <span id="val-security">70</span><span style="font-size: 0.95rem; color: var(--text-muted);">/100</span>
-        </div>
-        <div class="meter-container" aria-hidden="true">
-          <div class="meter-fill" id="meter-security" style="width: 70%; background-color: var(--stat-security);"></div>
+        <div class="telemetry-val" style="color: var(--cyan-neon);"><span id="val-security">70</span><span style="font-size:0.9rem; color:var(--text-dim);">/100</span></div>
+        <div class="telemetry-track" aria-hidden="true">
+          <div class="telemetry-fill" id="fill-security" style="width: 70%; background: var(--cyan-neon);"></div>
         </div>
       </div>
 
-      <!-- Customer Trust Card -->
-      <div class="stat-card" id="card-trust">
-        <div class="stat-label-row">
-          <span class="stat-name">Customer Trust</span>
-          <span class="stat-delta zero" id="delta-trust">+0</span>
+      <!-- Customer Trust -->
+      <div class="telemetry-card" id="card-trust">
+        <div class="telemetry-top">
+          <span class="telemetry-title">👥 Customer Trust</span>
+          <span class="telemetry-delta hidden" id="delta-trust">+0</span>
         </div>
-        <div class="stat-value" style="color: var(--stat-trust);">
-          <span id="val-trust">70</span><span style="font-size: 0.95rem; color: var(--text-muted);">/100</span>
-        </div>
-        <div class="meter-container" aria-hidden="true">
-          <div class="meter-fill" id="meter-trust" style="width: 70%; background-color: var(--stat-trust);"></div>
+        <div class="telemetry-val" style="color: var(--amber-neon);"><span id="val-trust">70</span><span style="font-size:0.9rem; color:var(--text-dim);">/100</span></div>
+        <div class="telemetry-track" aria-hidden="true">
+          <div class="telemetry-fill" id="fill-trust" style="width: 70%; background: var(--amber-neon);"></div>
         </div>
       </div>
 
-      <!-- Reputation Card -->
-      <div class="stat-card" id="card-reputation">
-        <div class="stat-label-row">
-          <span class="stat-name">Market Reputation</span>
-          <span class="stat-delta zero" id="delta-reputation">+0</span>
+      <!-- Evidence -->
+      <div class="telemetry-card" id="card-evidence">
+        <div class="telemetry-top">
+          <span class="telemetry-title">🔎 Evidence Gathered</span>
+          <span class="telemetry-delta hidden" id="delta-evidence">+0</span>
         </div>
-        <div class="stat-value" style="color: var(--stat-reputation);">
-          <span id="val-reputation">70</span><span style="font-size: 0.95rem; color: var(--text-muted);">/100</span>
-        </div>
-        <div class="meter-container" aria-hidden="true">
-          <div class="meter-fill" id="meter-reputation" style="width: 70%; background-color: var(--stat-reputation);"></div>
+        <div class="telemetry-val" style="color: #a855f7;"><span id="val-evidence">0</span><span style="font-size:0.9rem; color:var(--text-dim);">/10</span></div>
+        <div class="telemetry-track" aria-hidden="true">
+          <div class="telemetry-fill" id="fill-evidence" style="width: 0%; background: #a855f7;"></div>
         </div>
       </div>
 
     </section>
 
-    <main id="main-game-content" class="gameplay-area" role="main">
-      <!-- Dynamic game state content gets rendered here via JavaScript -->
+    <!-- Main Dynamic Gameplay Console -->
+    <main id="ops-main-screen" class="ops-screen" role="main">
+      <!-- Injected dynamically based on stage -->
     </main>
 
-    <!-- Keyboard Navigation Reference Footer -->
-    <footer class="shortcuts-reminder" aria-label="Keyboard Shortcuts Guide">
-      <div class="shortcut-item">
-        <span class="key-badge">1</span>–<span class="key-badge">4</span>
-        <span>Select Option</span>
+    <!-- Accessibility / Quick Guide Footer -->
+    <footer class="shortcuts-footer" aria-label="Keyboard Shortcuts Map">
+      <div class="shortcut-cluster">
+        <span class="keycap">1</span>–<span class="keycap">4</span>
+        <span>Select Choice</span>
       </div>
-      <div class="shortcut-item">
-        <span class="key-badge">Enter</span> / <span class="key-badge">Space</span>
-        <span>Confirm Choice</span>
+      <div class="shortcut-cluster">
+        <span class="keycap">Enter</span>
+        <span>Confirm</span>
       </div>
-      <div class="shortcut-item">
-        <span class="key-badge">N</span>
-        <span>Next Round</span>
+      <div class="shortcut-cluster">
+        <span class="keycap">N</span>
+        <span>Next Step</span>
       </div>
-      <div class="shortcut-item">
-        <span class="key-badge">R</span>
+      <div class="shortcut-cluster">
+        <span class="keycap">E</span>
+        <span>Evidence Locker</span>
+      </div>
+      <div class="shortcut-cluster">
+        <span class="keycap">R</span>
         <span>Repeat Narration</span>
       </div>
-      <div class="shortcut-item">
-        <span class="key-badge">S</span>
-        <span>Mute / Unmute Speech</span>
+      <div class="shortcut-cluster">
+        <span class="keycap">S</span>
+        <span>Speech Mute</span>
       </div>
-      <div class="shortcut-item">
-        <span class="key-badge">H</span>
-        <span>Help Modal</span>
+      <div class="shortcut-cluster">
+        <span class="keycap">Esc</span>
+        <span>Close Overlays</span>
       </div>
     </footer>
 
   </div>
 
-  <!-- Help & Instructions Modal -->
-  <div id="help-modal" class="help-modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="help-title">
-    <div class="help-modal-box">
-      <h2 id="help-title" style="font-size: 1.4rem; margin-bottom: 1rem; color: #38bdf8;">BANKSHIFT Accessibility & Keyboard Controls</h2>
-      <div style="font-size: 0.95rem; line-height: 1.6; color: #cbd5e1; margin-bottom: 1.25rem;">
-        <p style="margin-bottom: 0.75rem;"><strong>Universal Design Philosophy:</strong> BANKSHIFT is 100% playable without sight (using speech narration and screen readers), without hearing (every event is visually subtitled and annotated), and without speech (no voice commands needed).</p>
-        <ul style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-          <li><span class="key-badge">1</span>, <span class="key-badge">2</span>, <span class="key-badge">3</span>, <span class="key-badge">4</span> : Choose decisions</li>
-          <li><span class="key-badge">Enter</span> or <span class="key-badge">Space</span> : Confirm selected decision</li>
-          <li><span class="key-badge">N</span> : Proceed to next round</li>
-          <li><span class="key-badge">R</span> : Repeat round description and choices aloud</li>
-          <li><span class="key-badge">S</span> : Toggle Voice Speech Synthesis</li>
-          <li><span class="key-badge">Esc</span> or <span class="key-badge">H</span> : Close this window</li>
-        </ul>
-        <p>You can also use a standard mouse or touch screen at any time.</p>
+  <!-- Evidence Locker Modal -->
+  <div id="modal-evidence" class="overlay-modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="modal-evidence-heading">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3 id="modal-evidence-heading">🔎 Unlocked Forensic Evidence</h3>
+        <button class="cyber-btn" onclick="toggleEvidenceModal(false)" aria-label="Close Evidence Modal">Esc ✕</button>
       </div>
-      <div style="text-align: right;">
-        <button id="close-help-btn" class="action-button active" style="padding: 0.6rem 1.4rem;">Close (Esc)</button>
+      <div class="modal-content" id="evidence-modal-body">
+        <!-- Injected Clues List -->
+      </div>
+      <div class="modal-foot">
+        <button class="cyber-btn active" onclick="toggleEvidenceModal(false)">Back to Operations</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help & Manual Modal -->
+  <div id="modal-help" class="overlay-modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="modal-help-heading">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3 id="modal-help-heading">⌨️ Operational Guide & Universal Accessibility</h3>
+        <button class="cyber-btn" onclick="toggleHelpModal(false)" aria-label="Close Help Modal">Esc ✕</button>
+      </div>
+      <div class="modal-content" style="font-size: 0.95rem; line-height: 1.6; color: #cbd5e1;">
+        <p><strong style="color: #38bdf8;">Universal Accessibility Features:</strong> This simulation meets WCAG AAA universal standards. It is 100% playable without sight (built-in speech synthesizer + ARIA live announcements), without hearing (every audio broadcast appears in the synchronized live captions), and without speaking (pure single-key keyboard or mouse interaction).</p>
+        <div style="background: #090e18; padding: 1rem; border-radius: 8px; border: 1px solid #1e293b;">
+          <h4 style="color:#ffffff; margin-bottom: 0.5rem; font-family: 'JetBrains Mono', monospace;">Keyboard Shortcuts:</h4>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.4rem;">
+            <li><span class="keycap">1</span> to <span class="keycap">4</span> : Choose decisions & select suspects</li>
+            <li><span class="keycap">Enter</span> : Confirm selection & progress</li>
+            <li><span class="keycap">N</span> : Advance to next round when consequence is displayed</li>
+            <li><span class="keycap">R</span> : Re-read current scenario, telemetry, & options</li>
+            <li><span class="keycap">E</span> : Open / Close Forensic Evidence Locker</li>
+            <li><span class="keycap">S</span> : Mute / Unmute speech synthesis</li>
+            <li><span class="keycap">Esc</span> : Close any open window</li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="cyber-btn active" onclick="toggleHelpModal(false)">Dismiss (Esc)</button>
       </div>
     </div>
   </div>
 
   <script>
-    /* Accessible Tone & Speech Synthesizer */
-    class AccessibleAudioEngine {
+    /* Accessible Speech & Tone Engine */
+    class CyberVoiceEngine {
       constructor() {
         this.speechEnabled = true;
         this.synth = window.speechSynthesis || null;
-        this.currentUtterance = null;
-        this.audioCtx = null;
-        
-        // Voice caching
         this.voice = null;
+        this.audioCtx = null;
+
         if (this.synth) {
-          const updateVoices = () => {
-            const voices = this.synth.getVoices();
-            // Prioritize clear English voices
-            this.voice = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Daniel'))) 
-                         || voices.find(v => v.lang.startsWith('en')) 
-                         || voices[0];
+          const loadVoices = () => {
+            const list = this.synth.getVoices();
+            this.voice = list.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('David'))) 
+                         || list.find(v => v.lang.startsWith('en')) 
+                         || list[0];
           };
-          updateVoices();
+          loadVoices();
           if (this.synth.onvoiceschanged !== undefined) {
-            this.synth.onvoiceschanged = updateVoices;
+            this.synth.onvoiceschanged = loadVoices;
           }
         }
       }
 
-      initAudioCtx() {
+      initCtx() {
         if (!this.audioCtx) {
-          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-          if (AudioContextClass) {
-            this.audioCtx = new AudioContextClass();
-          }
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.audioCtx = new AudioContext();
         }
       }
 
-      // Pleasant accessible non-essential sound cues for players with hearing
-      playTone(type) {
+      playSfx(type) {
         try {
-          this.initAudioCtx();
+          this.initCtx();
           if (!this.audioCtx) return;
-          if (this.audioCtx.state === 'suspended') {
-            this.audioCtx.resume();
-          }
+          if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
 
+          const now = this.audioCtx.currentTime;
           const osc = this.audioCtx.createOscillator();
           const gain = this.audioCtx.createGain();
           osc.connect(gain);
           gain.connect(this.audioCtx.destination);
 
-          const now = this.audioCtx.currentTime;
-
           if (type === 'select') {
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(440, now);
-            osc.frequency.exponentialRampToValueAtTime(587, now + 0.08);
+            osc.frequency.setValueAtTime(400, now);
+            osc.frequency.exponentialRampToValueAtTime(600, now + 0.07);
             gain.gain.setValueAtTime(0.12, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
             osc.start(now);
-            osc.stop(now + 0.08);
+            osc.stop(now + 0.07);
           } else if (type === 'confirm') {
             osc.type = 'triangle';
-            osc.frequency.setValueAtTime(523.25, now);
-            osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.15);
-            gain.gain.setValueAtTime(0.18, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+            osc.frequency.setValueAtTime(520, now);
+            osc.frequency.exponentialRampToValueAtTime(800, now + 0.14);
+            gain.gain.setValueAtTime(0.16, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
             osc.start(now);
-            osc.stop(now + 0.15);
-          } else if (type === 'round') {
+            osc.stop(now + 0.14);
+          } else if (type === 'clue') {
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(392, now);
-            osc.frequency.exponentialRampToValueAtTime(784, now + 0.2);
-            gain.gain.setValueAtTime(0.15, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+            osc.frequency.setValueAtTime(659, now);
+            osc.frequency.setValueAtTime(880, now + 0.1);
+            gain.gain.setValueAtTime(0.18, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
             osc.start(now);
-            osc.stop(now + 0.2);
+            osc.stop(now + 0.25);
+          } else if (type === 'alert') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(250, now);
+            osc.frequency.exponentialRampToValueAtTime(180, now + 0.18);
+            gain.gain.setValueAtTime(0.15, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+            osc.start(now);
+            osc.stop(now + 0.18);
           }
         } catch (e) {
-          // Audio context might fail due to autoplay restrictions; silently degrade
+          // graceful fallback
         }
       }
 
-      // Unified Speech narration with cancellation guard
-      speak(text, onEndCallback = null) {
-        // Always display on visual live caption bar for deaf accessibility
-        updateLiveCaption(text);
-
-        // Announce via aria-live for blind players using their own screen reader
-        announceSR(text);
+      speak(text, onEnd = null) {
+        // Deaf accessibility: mirror to live subtitle panel immediately
+        updateCaption(text);
+        announceScreenReader(text);
 
         if (!this.speechEnabled || !this.synth) {
-          if (onEndCallback) onEndCallback();
+          if (onEnd) onEnd();
           return;
         }
 
         try {
-          this.synth.cancel(); // Stop any overlapping previous speeches
+          this.synth.cancel(); // clean stop previous utterances
 
-          // Clean speech text (e.g. speak "rupees" instead of symbol)
-          const cleanedText = text
+          const cleaned = text
             .replace(/₹/g, ' rupees ')
+            .replace(/Cr/gi, ' crore ')
+            .replace(/L/gi, ' lakh ')
             .replace(/\//g, ' out of ')
-            .replace(/\+/g, ' plus ')
-            .replace(/-/g, ' minus ');
+            .replace(/-/g, ' minus ')
+            .replace(/\+/g, ' plus ');
 
-          const utterance = new SpeechSynthesisUtterance(cleanedText);
+          const utterance = new SpeechSynthesisUtterance(cleaned);
           if (this.voice) utterance.voice = this.voice;
-          utterance.rate = 1.02;
-          utterance.pitch = 1.0;
+          utterance.rate = 1.05;
+          utterance.pitch = 0.98;
 
-          if (onEndCallback) {
-            utterance.onend = onEndCallback;
-            utterance.onerror = onEndCallback;
+          if (onEnd) {
+            utterance.onend = onEnd;
+            utterance.onerror = onEnd;
           }
 
-          this.currentUtterance = utterance;
           this.synth.speak(utterance);
         } catch (err) {
-          console.warn('Speech synthesis error:', err);
-          if (onEndCallback) onEndCallback();
+          console.warn(err);
+          if (onEnd) onEnd();
         }
       }
 
-      stopSpeech() {
-        if (this.synth) {
-          this.synth.cancel();
-        }
+      stop() {
+        if (this.synth) this.synth.cancel();
       }
 
-      toggleSpeech() {
+      toggle() {
         this.speechEnabled = !this.speechEnabled;
-        if (!this.speechEnabled) {
-          this.stopSpeech();
-        }
+        if (!this.speechEnabled) this.stop();
         return this.speechEnabled;
       }
     }
 
-    const BANKING_SCENARIOS = [
+    /* Suspect Dossiers (The true culprit is Ryan — Security Analyst)
+       Deductive logic:
+       - Clue 1: Attacker knew information only available internally (eliminated outside hackers).
+       - Clue 2: Intrusion used security telemetry override keys (points to IT or Security).
+       - Clue 3: Fake CEO authorization email header spoofed from terminal MAC:SEC-409 (Ryan's dedicated station).
+       - Clue 4: Deleted audit logs had cryptographic timestamps signed with Key-SecAlpha (Assigned directly to Security Analyst).
+       - Clue 5: Social engineering caller asked for OTP bypassing SOC fraud protocol (insider knowledge of SOC rotation).
+       - Clue 6: The offshore shell account matched a dormant crypto-bridge registered in Malta linked to Ryan's former employer.
+    */
+    const SUSPECTS = [
+      {
+        id: 'aarav',
+        name: "Aarav Sharma",
+        role: "Senior IT Administrator",
+        badge: "IT-SYS-88",
+        summary: "Maintains core database clustering and data center server infrastructure. Has root access to hardware layers.",
+        alibi: "Was on remote standby from home; access logs show his primary token logged out at 2:30 AM after standard server backups.",
+        station: "MAC:SRV-102 (Server Room)"
+      },
+      {
+        id: 'meera',
+        name: "Meera Sen",
+        role: "Finance Operations Manager",
+        badge: "FIN-OPS-14",
+        summary: "Authorizes institutional interbank liquidity and handles regulatory reporting to the Reserve Bank.",
+        alibi: "Attending the Asian Banking Forum in Singapore; flight departure manifested at 9:00 PM the previous evening.",
+        station: "MAC:FIN-205 (Executive Floor)"
+      },
+      {
+        id: 'ryan',
+        name: "Ryan Cooper",
+        role: "Lead Security Analyst",
+        badge: "SOC-SEC-09",
+        summary: "Monitors real-time intrusion detection systems, writes firewall bypass rules, and holds master signing key SecAlpha.",
+        alibi: "Claimed he was physically inspecting branch ATM telemetry; however, security camera footage shows his workstation active.",
+        station: "MAC:SEC-409 (Cyber Defense SOC)"
+      },
+      {
+        id: 'tara',
+        name: "Tara Nair",
+        role: "Branch Operations Director",
+        badge: "OPS-DIR-33",
+        summary: "Oversees physical cash vaults and retail banking teller networks across regional branches.",
+        alibi: "Signing physical vault reconciliations at downtown branch until 1:15 AM with two junior auditors present as witnesses.",
+        station: "MAC:OPS-301 (Regional Office)"
+      }
+    ];
+
+    /* 10 Realistic Interactive Rounds with Trade-offs */
+    const GAME_ROUNDS = [
       {
         id: 1,
-        title: "Suspicious Large Transfer",
-        risk: "Medium",
-        description: "An automated flag highlights a series of ₹2,500 wire transfers heading overseas from multiple elderly account holders within minutes. The accounts have never initiated international wires before.",
+        title: "The 3:17 AM Impossible Transfer",
+        threat: "elevated",
+        scenario: "Automated perimeter sensors trip. At exactly 3:17 AM, a transfer of ₹85 Lakh is requested from Account #4821 (a quiet rural savings account with an average monthly balance of ₹4,000) directed to an offshore account in Cyprus.",
+        dossier: [
+          { key: "Target Account", val: "Acct #4821 (Elderly Pensioner)" },
+          { key: "Amount", val: "₹85,00,000" },
+          { key: "Routing Bypass", val: "Internal Staff Override Flagged" },
+          { key: "Time Stamp", val: "03:17:42 IST" }
+        ],
         options: [
           {
-            label: "Emergency Freeze & Manual Verification",
-            detail: "Halt the transactions immediately and mandate two-factor phone calls before releasing funds.",
-            impact: { money: -200, security: +12, trust: +6, rep: +5 },
-            outcome: "Fraud stopped! You caught an active overseas phishing ring. Minor operational call center costs incurred, but customers are grateful for protecting their life savings."
+            label: "Freeze Transaction & Quarantine Account",
+            desc: "Immediately halt the wire, protect the senior citizen's balance, and launch forensic packet inspection.",
+            impact: { funds: 0, security: +6, trust: +5, score: 600 },
+            clue: "FORENSIC CLUE #1: The wire bypass used an internal employee credential hash that bypassed standard dual-factor approval.",
+            narrative: "Transfer blocked! You saved the customer's account. Deep packet inspection proves the attacker possessed high-level internal system blueprints."
           },
           {
-            label: "Allow Transfers & Investigate Later",
-            detail: "Permit the wires to prevent customer annoyance; run retrospective forensic audit tomorrow.",
-            impact: { money: -1500, security: -15, trust: -14, rep: -10 },
-            outcome: "Disaster! It was an elder-fraud syndicate. The money vanished off-shore. Victims are furious at the bank's negligence."
+            label: "Approve Transfer & Trace Destination Wire",
+            desc: "Allow the transfer to clear in order to track the offshore beneficiary bank account.",
+            impact: { funds: -8500000, security: -8, trust: -14, score: -200 },
+            clue: null,
+            narrative: "Severe Loss! The offshore money mule withdrew the funds in untraceable crypto within 90 seconds. The victim's family is in tears."
           },
           {
-            label: "Selective Delay on Largest Accounts",
-            detail: "Delay transfers over ₹3,000 for 12 hours while passing smaller transactions through.",
-            impact: { money: -400, security: +3, trust: -4, rep: +1 },
-            outcome: "Mixed results. You intercepted part of the scam, but fraudsters slipped several lower-denomination transactions through."
+            label: "Delay for 24-Hour Daytime Branch Call",
+            desc: "Pause the transaction until regional branch tellers open at 9:30 AM.",
+            impact: { funds: 0, security: +2, trust: -2, score: 300 },
+            clue: null,
+            narrative: "Transfer paused safely, but the delay protocol alerted the intruder that defense teams are awake."
           }
         ]
       },
       {
         id: 2,
-        title: "Risky High-Yield Commercial Loan",
-        risk: "High",
-        description: "A fast-growing green energy tech startup requests a ₹3,000 credit line at an attractive 18% interest return. However, their collateral consists largely of unproven patents.",
+        title: "The Fake Batch Infiltration",
+        threat: "elevated",
+        scenario: "Four high-value commercial transactions have entered the clearing queue simultaneously. One of them is a fraudulent injection hiding amidst legitimate payroll wires. Identify the malicious transaction record.",
+        dossier: [
+          { key: "Record A", val: "₹42 Lakh • 03:22 AM • Mumbai Office • Terminal MAC:FIN-205" },
+          { key: "Record B", val: "₹1.4 Crore • 03:24 AM • Bengaluru SOC • Terminal MAC:SEC-409 (Ghost IP)" },
+          { key: "Record C", val: "₹18 Lakh • 03:25 AM • Hyderabad Hub • Terminal MAC:OPS-301" },
+          { key: "Record D", val: "₹35 Lakh • 03:26 AM • Pune Backup • Terminal MAC:SRV-102" }
+        ],
         options: [
           {
-            label: "Approve Full Loan with Patent Collateral",
-            detail: "Disburse the entire ₹3,000 to maximize potential future quarterly yields.",
-            impact: { money: +1800, security: -8, trust: +4, rep: +8 },
-            outcome: "The startup secured a government clean-power grant! They repaid early with a generous return on investment, cementing your innovation reputation."
+            label: "Flag Record B (₹1.4 Cr from MAC:SEC-409 via Ghost IP)",
+            desc: "Quarantine Record B originating from the Cyber Defense SOC workstation hiding behind an anonymizing proxy.",
+            impact: { funds: 0, security: +10, trust: +6, score: 750 },
+            clue: "FORENSIC CLUE #2: The malicious wire was originated from workstation MAC:SEC-409—the designated terminal inside the Cyber Security SOC.",
+            narrative: "Direct hit! Record B was a fabricated transfer injected directly into the clearing engine from terminal MAC:SEC-409."
           },
           {
-            label: "Reject Loan Application Outright",
-            detail: "Strict adherence to traditional low-risk underwriting guidelines.",
-            impact: { money: 0, security: +6, trust: -6, rep: -5 },
-            outcome: "Risk avoided, but the startup secured backing from a competitor. Local business media accuses your bank of being overly conservative and unsupportive of green tech."
+            label: "Flag Record A (₹42 Lakh from Finance Terminal)",
+            desc: "Block Record A assuming the Finance department was compromised.",
+            impact: { funds: -5000000, security: -6, trust: -8, score: -100 },
+            clue: null,
+            narrative: "Wrong record! Record A was a valid scheduled vendor invoice payment. The actual malicious wire slipped past."
           },
           {
-            label: "Approve Syndicated 50% Co-Lending",
-            detail: "Lend ₹1,500 and invite a partner banking cooperative to shoulder the remaining half.",
-            impact: { money: +800, security: +2, trust: +6, rep: +7 },
-            outcome: "Smart risk sharing! Your bank captures solid interest income while protecting the balance sheet against patent devaluation."
+            label: "Flag Record D (₹35 Lakh from Server Backup Room)",
+            desc: "Block Record D suspecting automated server scripts.",
+            impact: { funds: -4000000, security: -4, trust: -6, score: -50 },
+            clue: null,
+            narrative: "Incorrect. Record D was normal automated database licensing maintenance. You missed the malicious SOC terminal injection."
           }
         ]
       },
       {
         id: 3,
-        title: "Zero-Day Cyber Fraud Threat",
-        risk: "Critical",
-        description: "Cybersecurity telemetry detects unauthorized brute-force credential stuffing against your online banking API portal from distributed botnet IP addresses.",
+        title: "The CEO Emergency Wire Spoof",
+        threat: "extreme",
+        scenario: "An urgent encrypted dispatch flashes on your screen: 'URGENT: Immediate acquisition escrow deposit of ₹1.8 Crore required for Project Horizon. Do not call my phone; I am in closed diplomatic talks with regulators. Authorize instantly.'",
+        dossier: [
+          { key: "Sender", val: "ceo.office@bankshift-corp.internal (Spoofed)" },
+          { key: "Requested Wire", val: "₹1,80,00,000" },
+          { key: "Header Origin", val: "Originating internal gateway: MAC:SEC-409" },
+          { key: "Urgency Level", val: "Extreme / Do Not Verify Warning" }
+        ],
         options: [
           {
-            label: "Trigger Full Lockdown & Mandatory Password Reset",
-            detail: "Temporarily shutter online banking for 2 hours to deploy zero-trust cryptographic patch.",
-            impact: { money: -600, security: +18, trust: -8, rep: +6 },
-            outcome: "Security perimeter reinforced without any customer breach! Some users complained about downtime, but independent security auditors praised your proactive defense."
+            label: "Reject Wire & Challenge via Physical Hard-Token Challenge",
+            desc: "Refuse unverified bypass, mandate offline biometric verification, and alert corporate security.",
+            impact: { funds: 0, security: +12, trust: +8, score: 800 },
+            clue: "FORENSIC CLUE #3: The fake CEO email was relayed through an internal security script running under the 'SecAlpha' operational permission.",
+            narrative: "Brilliant defense! The CEO was asleep in Delhi and never sent the email. The spoof header originated from workstation MAC:SEC-409 using SecAlpha credentials."
           },
           {
-            label: "Deploy Silent Traffic Throttling in Background",
-            detail: "Attempt to filter bot traffic with rate limits while keeping the web portal online.",
-            impact: { money: -1200, security: -10, trust: -10, rep: -12 },
-            outcome: "The botnet bypassed the rate limits! Dozens of consumer accounts were compromised before staff could react. Customer trust plunges."
+            label: "Approve Transfer Immediately Out of Fear",
+            desc: "Comply with the CEO's directive to prevent delaying corporate mergers.",
+            impact: { funds: -18000000, security: -15, trust: -16, score: -800 },
+            clue: null,
+            narrative: "Catastrophe! ₹1.8 Crore was siphoned into an offshore cryptocurrency tumbling pool. The Board convenes an emergency inquiry."
           },
           {
-            label: "Hire Specialized Cyber Incident Response Firm",
-            detail: "Contract elite third-party security consultants for an immediate emergency ₹800 retainer.",
-            impact: { money: -800, security: +14, trust: +5, rep: +9 },
-            outcome: "The specialized team neutralized the threat without web downtime and hardened your cloud infrastructure for the future."
+            label: "Split the Difference: Authorize ₹50 Lakh First",
+            desc: "Send a partial tranche while attempting phone contact.",
+            impact: { funds: -5000000, security: -10, trust: -10, score: -300 },
+            clue: null,
+            narrative: "Compromised! The attacker pocketed the ₹50 Lakh instantly and severed the connection."
           }
         ]
       },
       {
         id: 4,
-        title: "Sudden Social Media Run Rumor",
-        risk: "High",
-        description: "Viral rumors on social media falsely claim that your bank has liquidity issues. Long withdrawal queues are forming at three major city branches.",
+        title: "The Rogue Workstation Access",
+        threat: "elevated",
+        scenario: "Internal IDS detects abnormal packet sniffing targeting customer Master Pin records. You pull up physical security swipe card logs and active terminal sessions across four departments to compare anomalies.",
+        dossier: [
+          { key: "IT Server Room", val: "Aarav Sharma — Badge valid, camera confirms server room empty" },
+          { key: "Finance Desk", val: "Meera Sen — Roaming IP detected from Changi Airport Wi-Fi" },
+          { key: "Cyber SOC Terminal", val: "Ryan Cooper — Badge swiped 01:10 AM, terminal actively sending packets" },
+          { key: "Retail Operations", val: "Tara Nair — Offline since 01:15 AM vault lock" }
+        ],
         options: [
           {
-            label: "Open Vaults & Cash Every Withdrawal With a Smile",
-            detail: "Extend branch hours, serve refreshments, and ensure all teller counters display abundant physical cash.",
-            impact: { money: -1000, security: 0, trust: +18, rep: +15 },
-            outcome: "Masterclass in banking confidence! Seeing that everyone got their money without hesitation, depositors calmed down and redeposited their cash within days."
+            label: "Isolate Cyber SOC Workstation MAC:SEC-409",
+            desc: "Cut the network umbilical cable to the security analyst terminal and isolate its MAC address.",
+            impact: { funds: 0, security: +14, trust: +4, score: 700 },
+            clue: "FORENSIC CLUE #4: Workstation MAC:SEC-409 was physically unlocked using the keycard assigned to Lead Security Analyst Ryan.",
+            narrative: "Intervention successful! You severed the rogue terminal session before it could extract encrypted customer card PINs."
           },
           {
-            label: "Impose Daily Withdrawal Caps of ₹1,000",
-            detail: "Restrict cash withdrawals immediately to preserve vault liquidity.",
-            impact: { money: -200, security: +4, trust: -22, rep: -20 },
-            outcome: "Panic! The withdrawal caps convinced anxious crowds that the rumor was true. News cameras broadcasted the mayhem outside branches."
+            label: "Cut Power to Main Server Room",
+            desc: "Shut down Aarav's rack to stop server operations.",
+            impact: { funds: -1500000, security: -4, trust: -18, score: -400 },
+            clue: null,
+            narrative: "Collateral damage! You knocked legitimate nationwide ATM processing offline while the actual attacker on the SOC desk kept typing."
           },
           {
-            label: "Broadcast Joint Statement with Banking Regulator",
-            detail: "Issue immediate verified audits on television and social media proving rock-solid capital reserves.",
-            impact: { money: -300, security: +4, trust: +12, rep: +12 },
-            outcome: "The official regulatory backing debunked the malicious rumors. Panic dispersed and regular operations resumed safely."
+            label: "Broadcast Facility-Wide Audio Warning",
+            desc: "Sound alarms over building loudspeakers to scare off the intruder.",
+            impact: { funds: 0, security: -6, trust: -12, score: -150 },
+            clue: null,
+            narrative: "The attacker simply disconnected their flash drive and wiped local temporary memory files before guards arrived."
           }
         ]
       },
       {
         id: 5,
-        title: "Hidden Fees Customer Outcry",
-        risk: "Low",
-        description: "A consumer watchdog group highlights that new automated account maintenance fees disproportionately penalize low-balance student and senior accounts.",
+        title: "The Coordinated Bank Run",
+        threat: "extreme",
+        scenario: "Coordinated bot accounts on social media spread panic: 'BANK HAS COLLAPSED! WITHDRAW EVERYTHING NOW!' Within 10 minutes, mobile banking transactions spike by 800% as thousands of anxious citizens rush to withdraw savings.",
+        dossier: [
+          { key: "Withdrawal Velocity", val: "₹2.2 Crore requested per minute" },
+          { key: "Traffic Vector", val: "Coordinated bot net pushing malicious panic links" },
+          { key: "Server Load", val: "94% CPU capacity reached" },
+          { key: "Vulnerability", val: "Attacker attempting to sneak a ₹3 Crore siphon inside the chaos" }
+        ],
         options: [
           {
-            label: "Abolish Fees & Refund Affected Accounts",
-            detail: "Refund ₹500 in accumulated fees and launch a transparent zero-fee basic account tier.",
-            impact: { money: -500, security: 0, trust: +16, rep: +14 },
-            outcome: "Community praise! The bank gains thousands of new loyal young depositors and garners glowing editorial praise."
+            label: "Enforce Smart Rate-Limiting & Deploy Real-Time Proof of Reserves",
+            desc: "Publish live certified central bank balance sheets on web/TV while rate-limiting requests to ₹25,000 per user.",
+            impact: { funds: -500000, security: +8, trust: +18, score: 850 },
+            clue: "FORENSIC CLUE #5: The bot swarm used proprietary bank stress-testing scripts that only the internal security team had access to.",
+            narrative: "Exemplary crisis management! Transparent communication dispelled the panic, while rate limits stopped the attacker's ₹3 Crore diversion."
           },
           {
-            label: "Defend the Fee Schedule Publicly",
-            detail: "Release a statement explaining that account maintenance fees are necessary to cover modern cloud operations.",
-            impact: { money: +400, security: 0, trust: -14, rep: -12 },
-            outcome: "The bank maintained revenue, but suffered a sharp public relations backlash and boycott campaigns on campus campuses."
+            label: "Complete Lockdown: Terminate All Digital Banking",
+            desc: "Sever all internet connections and turn off mobile banking completely.",
+            impact: { funds: 0, security: +5, trust: -25, score: -250 },
+            clue: null,
+            narrative: "Panic turned into outright riot outside branch offices. While funds were frozen, national newspapers headline your total failure of confidence."
           },
           {
-            label: "Waive Fees for Students & Seniors Only",
-            detail: "Institute targeted exemptions while maintaining standard tariffs for commercial accounts.",
-            impact: { money: -150, security: 0, trust: +7, rep: +6 },
-            outcome: "A balanced compromise that quelled consumer advocacy concerns while protecting the bank's operational margin."
+            label: "Allow Unlimited Instant Withdrawals Without Checks",
+            desc: "Let all transactions flow without throttle to prove solvency.",
+            impact: { funds: -28000000, security: -18, trust: -6, score: -700 },
+            clue: null,
+            narrative: "Disaster! Amid the frenzy, the attacker's hidden ₹3 Crore siphon went completely unnoticed and cleared interbank settlement."
           }
         ]
       },
       {
         id: 6,
-        title: "Synthetic KYC Identity Ring",
-        risk: "Medium",
-        description: "Internal compliance identifies 150 accounts opened with valid government tax IDs blended with fabricated names and addresses—a synthetic identity fraud ring.",
+        title: "The Vanishing Audit Trail",
+        threat: "elevated",
+        scenario: "At 03:45 AM, the core security log daemon stops transmitting. Someone has systematically scrubbed the last 4 hours of firewall connection logs using an administrative cryptographic key.",
+        dossier: [
+          { key: "Scrubbed Files", val: "/var/log/audit/auth.log and /var/log/wire_gateway.log" },
+          { key: "Encryption Key Used", val: "Key-SecAlpha (Master Security Analyst Token)" },
+          { key: "Cold Storage Mirror", val: "Offline write-once optical disc backup available" }
+        ],
         options: [
           {
-            label: "Institute Video Biometric Re-verification",
-            detail: "Require live face-matching and biometric scans for all flagged digital profiles.",
-            impact: { money: -350, security: +15, trust: -3, rep: +8 },
-            outcome: "The fraudulent ring was completely purged! Legitimate customers experienced a slight friction, but welcomed the bank's integrity."
+            label: "Mount Cold Storage WORM Mirror & Capture Active Memory RAM",
+            desc: "Read the un-erasable optical disk backup and take an instant snapshot of volatile memory.",
+            impact: { funds: 0, security: +12, trust: +4, score: 700 },
+            clue: "FORENSIC CLUE #6: Memory dump reveals the deleted logs were executed with token 'Key-SecAlpha', issued exclusively to Ryan Cooper.",
+            narrative: "Forensic breakthrough! The optical disk recovered every deleted command. It confirms Ryan's SecAlpha key was used to execute the wipe."
           },
           {
-            label: "Quietly Close Flagged Accounts",
-            detail: "Terminate accounts without notifying police or regulator to avoid bad publicity.",
-            impact: { money: -200, security: -4, trust: -5, rep: -8 },
-            outcome: "Regulatory penalty! The central bank discovered you closed accounts without filing mandatory Suspicious Activity Reports (SARs)."
+            label: "Reboot All Core Cluster Servers Immediately",
+            desc: "Perform a hard restart to reinitialize logging services.",
+            impact: { funds: -1000000, security: -12, trust: -8, score: -200 },
+            clue: null,
+            narrative: "Fatal forensic error! A hard reboot completely cleared volatile RAM memory, destroying invaluable evidence forever."
           },
           {
-            label: "Cooperate with Central Cyber Police Sting",
-            detail: "Leave dummy honeypot accounts open to assist law enforcement in tracking the syndicate leaders.",
-            impact: { money: -100, security: +12, trust: +8, rep: +14 },
-            outcome: "Major victory! Police arrested the ringleaders. The national police commissioner personally thanked your institution at a press briefing."
+            label: "Ignore Missing Logs and Focus Only on Cashiers",
+            desc: "Assume the log server simply crashed due to load.",
+            impact: { funds: 0, security: -10, trust: -6, score: -150 },
+            clue: null,
+            narrative: "The attacker continues operating under total radio silence with zero surveillance monitoring their actions."
           }
         ]
       },
       {
         id: 7,
-        title: "Green Infrastructure Bond Opportunity",
-        risk: "Low",
-        description: "The municipal government offers your bank exclusive underwriting rights for a ₹2,000 solar grid infrastructure bond with guaranteed municipal backing.",
+        title: "Social Engineering the Fraud Desk",
+        threat: "elevated",
+        scenario: "Your emergency phone rings. An agitated voice claims: 'This is Rajesh Mehta from VIP Wealth Management. My high-net-worth client's wire is blocked. I need the 6-digit master override OTP right now, or the Chairman will fire you by breakfast!'",
+        dossier: [
+          { key: "Incoming Caller ID", val: "Internal Ext #7004 (Spoofed PBX)" },
+          { key: "Requested Item", val: "Master Fraud Bypass Authorization Token" },
+          { key: "Acoustic Background", val: "Soft keyboard typing; identical to Security SOC room" }
+        ],
         options: [
           {
-            label: "Invest ₹2,000 for Exclusive Underwriting",
-            detail: "Become the sole lead underwriter for the city's signature renewable project.",
-            impact: { money: +1200, security: +4, trust: +10, rep: +16 },
-            outcome: "Stellar financial and public success! The bond was oversubscribed, providing strong yields and earning the bank an ESG excellence award."
+            label: "Execute Protocol Zero: Challenge Caller Identity & Trace Extension",
+            desc: "Demand secondary security passphrase, stall the caller, and pinpoint the physical phone line.",
+            impact: { funds: 0, security: +12, trust: +6, score: 750 },
+            clue: "FORENSIC CLUE #7: Audio analysis detects the caller was standing directly beside server rack SOC-Rack-3 in the Security room.",
+            narrative: "Trap sprung! The caller panicked and hung up when challenged. PBX packet traces confirm the call came from inside the Cyber Defense building."
           },
           {
-            label: "Invest Conservative ₹800 Tranche",
-            detail: "Take a modest position to test market appetite without locking up liquidity.",
-            impact: { money: +450, security: +2, trust: +5, rep: +6 },
-            outcome: "A safe, steady return. Balanced liquidity maintained with zero stress to cash flow."
+            label: "Provide the Master OTP to Avoid Executive Displeasure",
+            desc: "Read out the 6-digit bypass code to Rajesh Mehta.",
+            impact: { funds: -12000000, security: -20, trust: -16, score: -800 },
+            clue: null,
+            narrative: "Total breach! The caller was the attacker using a voice changer. They bypassed authentication and siphoned ₹1.2 Crore instantly."
           },
           {
-            label: "Decline Participation to Preserve Liquid Cash",
-            detail: "Keep all capital in overnight interbank lending reserves.",
-            impact: { money: +100, security: 0, trust: -4, rep: -6 },
-            outcome: "Safe liquidity, but lost opportunity. Other financial institutions took credit for financing the city's green revolution."
+            label: "Hang Up Immediately Without Tracing",
+            desc: "Simply disconnect the phone call.",
+            impact: { funds: 0, security: +2, trust: 0, score: 200 },
+            clue: null,
+            narrative: "Call blocked, but failing to trace the internal line allowed the caller to slip into another wing undetected."
           }
         ]
       },
       {
         id: 8,
-        title: "Core Banking Cloud Outage",
-        risk: "Critical",
-        description: "A primary data center power transformer explosion knocks out core database synchronization on payday afternoon. ATMs, cards, and mobile apps are offline.",
+        title: "Follow the Smurfing Money Trail",
+        threat: "elevated",
+        scenario: "Automated ledger reconstruction uncovers a complex money laundering web (smurfing). Money was siphoned through a multi-hop daisy chain. Identify where the illicit transfer originated.",
+        dossier: [
+          { key: "Chain Hop 1", val: "Account #1092 (Salary Pool) → Account #3381 (Vendor Escrow)" },
+          { key: "Chain Hop 2", val: "Account #3381 → Account #8819 (Shell Consultant LLC, Malta)" },
+          { key: "Chain Hop 3", val: "Account #8819 → Offshore Crypto Exchange Cold Vault" },
+          { key: "Registry Link", val: "Shell Consultant LLC was incorporated by former security analyst in Valetta" }
+        ],
         options: [
           {
-            label: "Instantly Failover to Hot-Standby Disaster Recovery",
-            detail: "Execute immediate secondary cloud failover costing ₹600 in instant cloud spinning fees.",
-            impact: { money: -600, security: +10, trust: +10, rep: +10 },
-            outcome: "Seamless resilience! Operations restored within 7 minutes. Customers barely noticed, cementing trust in your technical infrastructure."
+            label: "Subpoena Shell Consultant LLC & Freeze Node #8819",
+            desc: "Identify Account #8819 as the criminal laundering nexus and transmit international freeze alerts.",
+            impact: { funds: +1500000, security: +14, trust: +10, score: 850 },
+            clue: "FORENSIC CLUE #8: Banking incorporation filings for Shell Consultant LLC list beneficiary initials 'R.C.' registered to a Malta crypto broker.",
+            narrative: "Masterful trace! You intercepted ₹1.5 Crore before it cleared into the cold vault and acquired irrefutable financial paperwork linking to R.C."
           },
           {
-            label: "Wait for Primary Data Center Physical Repair",
-            detail: "Estimated 3-hour downtime, but incurs no redundant cloud migration fees.",
-            impact: { money: 0, security: -8, trust: -18, rep: -16 },
-            outcome: "Huge customer uproar! Payday transactions failed during dinner hours. Store registers nationwide rejected your bank's debit cards."
+            label: "Freeze Account #1092 (Salary Pool)",
+            desc: "Freeze the initial corporate payroll pool.",
+            impact: { funds: 0, security: -4, trust: -15, score: -100 },
+            clue: null,
+            narrative: "False target! Freezing the salary pool prevented 800 hospital employees from getting paid, while the stolen funds escaped offshore."
           },
           {
-            label: "Activate Emergency Offline Card Authorization",
-            detail: "Allow local terminals to approve purchases up to ₹500 offline without real-time ledger checks.",
-            impact: { money: -750, security: -6, trust: +12, rep: +5 },
-            outcome: "Saved customer convenience! People bought their groceries, though a small percentage of overdraft slippage occurred."
+            label: "Wait for International Interpol Office to Open",
+            desc: "File a standard bureaucratic inquiry tomorrow morning.",
+            impact: { funds: -5000000, security: -8, trust: -6, score: -200 },
+            clue: null,
+            narrative: "Too slow. In digital finance, minutes mean millions. The funds dispersed across hundreds of mixer wallets."
           }
         ]
       },
       {
         id: 9,
-        title: "Major Corporate Default Threat",
-        risk: "High",
-        description: "A major regional retail supermarket chain with a ₹2,500 commercial loan faces severe inventory cash crunches and threatens bankruptcy.",
+        title: "The Suspect Cross-Examination",
+        threat: "extreme",
+        scenario: "You have locked down the executive security chamber. Four key personnel are seated before you. Based on the 8 forensic clues unlocked during your investigation, choose the true mastermind behind this digital heist.",
+        dossier: [
+          { key: "Clue Summary", val: "Internal access • Terminal MAC:SEC-409 • Key-SecAlpha • SOC Voice • Malta Shell 'R.C.'" },
+          { key: "Time Left", val: "The final backdoor malware detonates in 60 seconds." }
+        ],
+        isSuspectRound: true,
         options: [
           {
-            label: "Restructure Debt with Equity Stake",
-            detail: "Extend loan terms by 3 years in exchange for 15% corporate shares and board seats.",
-            impact: { money: -400, security: +5, trust: +8, rep: +12 },
-            outcome: "Brilliant corporate turnaround! The retail chain restructured, retained 1,200 jobs, and your equity value grew significantly."
+            label: "Accuse Aarav Sharma (Senior IT Administrator)",
+            desc: "Argue that only the IT server admin could have touched root database clusters.",
+            suspectId: 'aarav',
+            impact: { funds: 0, security: -10, trust: -10, score: -200 },
+            narrative: "Incorrect Accusation! Aarav's terminal logs confirm he was purely responding to server alerts. The real culprit smirks behind you."
           },
           {
-            label: "Foreclose and Seize Commercial Assets Immediately",
-            detail: "Send legal teams to liquidate inventory and store buildings to recover cash right away.",
-            impact: { money: +1100, security: +2, trust: -14, rep: -14 },
-            outcome: "You recovered a portion of the loan, but mass employee layoffs sparked union protests outside your headquarters."
+            label: "Accuse Meera Sen (Finance Operations Manager)",
+            desc: "Argue that she authorized the liquidity wire movements.",
+            suspectId: 'meera',
+            impact: { funds: 0, security: -10, trust: -10, score: -200 },
+            narrative: "Incorrect Accusation! Meera's passport and airport customs stamps prove she was aboard Singapore Airlines Flight 402."
           },
           {
-            label: "Offer Bridge Loan with Strict Covenants",
-            detail: "Lend an extra ₹500 with mandated weekly financial oversight by your bank's auditors.",
-            impact: { money: +300, security: +6, trust: +4, rep: +5 },
-            outcome: "Calculated intervention. The supermarket stabilized supply chains and began steady repayment."
+            label: "Accuse Ryan Cooper (Lead Security Analyst)",
+            desc: "Present the overwhelming evidence: Workstation MAC:SEC-409, SecAlpha encryption token, SOC audio acoustics, and the Malta shell company 'R.C.'",
+            suspectId: 'ryan',
+            impact: { funds: +2000000, security: +20, trust: +15, score: 1500 },
+            clue: "FINAL PROOF: Ryan's personal laptop contains the synchronized private encryption keys to the malware countdown timer!",
+            narrative: "CONFIRMED CULPRIT! Ryan drops his coffee as building armed marshals step forward. Trapped by the immutable forensic trail, he surrenders the private master keys!"
+          },
+          {
+            label: "Accuse Tara Nair (Branch Operations Director)",
+            desc: "Argue that retail operations needed funds to cover vault discrepancies.",
+            suspectId: 'tara',
+            impact: { funds: 0, security: -10, trust: -10, score: -200 },
+            narrative: "Incorrect Accusation! Tara was physically sealed inside the cash vault alongside two external state auditors."
           }
         ]
       },
       {
         id: 10,
-        title: "Global Financial Liquidity Crunch",
-        risk: "Critical",
-        description: "A sudden macroeconomic interest rate shock triggers panic across financial markets. Multiple mid-sized regional banks are facing insolvency.",
+        title: "The Zero-Hour Dead Man's Switch",
+        threat: "extreme",
+        scenario: "Before handcuffs click shut, an automated dead-man's malware switch triggers on the main vault core! A malicious crypto-wiper script begins an irreversible transfer of ₹5 Crore while attempting to scramble the bank's entire master customer database in 30 seconds!",
+        dossier: [
+          { key: "Target Payload", val: "Permanent database wiper & ₹5 Cr wire transfer" },
+          { key: "Time Remaining", val: "T-Minus 18 Seconds" },
+          { key: "Options Available", val: "Quantum Cryptographic Patch / Hardware Airgap / Decryption Token" }
+        ],
         options: [
           {
-            label: "Form a Resilient Community Stabilization Alliance",
-            detail: "Pledge ₹1,200 to establish an interbank liquidity pool supporting solvent local community lenders.",
-            impact: { money: -1200, security: +15, trust: +20, rep: +22 },
-            outcome: "Historic leadership! Your initiative halted contagion across the state. The Governor praises BANKSHIFT as a bedrock of societal stability."
+            label: "Deploy Ryan's Confiscated SecAlpha Master Decryption Token",
+            desc: "Use the private key seized from Ryan in Round 9 to disarm the worm and reverse the wire.",
+            impact: { funds: +3000000, security: +15, trust: +15, score: 1200 },
+            narrative: "TOTAL TRIUMPH! The seized SecAlpha token neutralizes the wiper malware with 3 seconds to spare! The wire is reversed, the database is intact, and ₹10 Crore remains secure!"
           },
           {
-            label: "Hoard Cash Reserves & Call in All Short-term Credit",
-            detail: "Cancel lines of credit and park all available funds in central bank vaults.",
-            impact: { money: +800, security: +10, trust: -25, rep: -22 },
-            outcome: "Your bank survived with cash reserves, but dozens of local businesses starved for working capital collapsed, severely damaging community trust."
+            label: "Physically Sever the Transcontinental Fiber Cable",
+            desc: "Chop the main physical data feed to the building.",
+            impact: { funds: -2000000, security: -5, trust: -10, score: 300 },
+            narrative: "Crude but partially effective. The physical cut stopped the data wiper, but caused ₹2 Crore in transit to become locked in interbank limbo."
           },
           {
-            label: "Acquire Distressed Solvent Competitor at Deep Discount",
-            detail: "Deploy ₹1,500 to acquire a failing rival's high-value branch network and deposit base.",
-            impact: { money: +1500, security: +2, trust: +6, rep: +14 },
-            outcome: "Aggressive expansion! You absorbed 30 new branches and doubled your customer base, emerging as a regional financial powerhouse."
+            label: "Attempt to Guess the Disarm Passcode",
+            desc: "Try manual emergency brute-forcing.",
+            impact: { funds: -5000000, security: -25, trust: -25, score: -1000 },
+            narrative: "Disaster! Three failed attempts triggered the self-destruct mechanism, corrupting ledger partition 0 and causing a ₹5 Crore loss."
           }
         ]
       }
     ];
 
-    const gameState = {
-      round: 1,
-      totalRounds: 10,
-      money: 10000,
+    /* Dynamic Application State */
+    const state = {
+      screen: 'intro', // 'intro' | 'round' | 'consequence' | 'debrief'
+      roundIdx: 0,
+      funds: 100000000, // ₹10 Crore (100,000,000)
       security: 70,
       trust: 70,
-      reputation: 70,
-      selectedOptionIndex: 0, // 0-indexed internally, 1-indexed to user
-      stage: 'decision', // 'decision' | 'consequence' | 'gameover'
-      lastConsequence: null
+      evidenceFound: 0,
+      score: 0,
+      unlockedClues: [],
+      selectedOption: 0,
+      accusedSuspect: null,
+      identifiedCulpritCorrectly: false
     };
 
-    const audio = new AccessibleAudioEngine();
+    const voice = new CyberVoiceEngine();
 
-    // DOM Elements
-    const srAnnouncements = document.getElementById('sr-announcements');
-    const liveCaption = document.getElementById('live-caption-text');
-    const gameplayContainer = document.getElementById('main-game-content');
-    const ttsToggleBtn = document.getElementById('tts-toggle-btn');
-    const ttsStatusText = document.getElementById('tts-status-text');
+    // Elements
+    const opsScreen = document.getElementById('ops-main-screen');
+    const srLive = document.getElementById('sr-live');
+    const captionText = document.getElementById('caption-text');
+    const ttsToggleBtn = document.getElementById('tts-toggle');
+    const ttsLabel = document.getElementById('tts-label');
     const ttsIcon = document.getElementById('tts-icon');
-    const repeatBtn = document.getElementById('repeat-btn');
-    const helpBtn = document.getElementById('help-btn');
-    const helpModal = document.getElementById('help-modal');
-    const closeHelpBtn = document.getElementById('close-help-btn');
+    const repeatBtn = document.getElementById('btn-repeat');
+    const evidenceCounterBtn = document.getElementById('evidence-counter-btn');
+    const evidenceModal = document.getElementById('modal-evidence');
+    const evidenceModalBody = document.getElementById('evidence-modal-body');
+    const helpModal = document.getElementById('modal-help');
 
-    // Live Caption Updater (Deaf Player Support)
-    function updateLiveCaption(text) {
-      liveCaption.textContent = text;
+    function updateCaption(txt) {
+      captionText.textContent = txt;
     }
 
-    // Screen Reader Announcer (Blind Player Support)
-    function announceSR(text) {
-      srAnnouncements.textContent = '';
+    function announceScreenReader(txt) {
+      srLive.textContent = '';
       setTimeout(() => {
-        srAnnouncements.textContent = text;
+        srLive.textContent = txt;
       }, 50);
     }
 
-    // Meter and Stat Visual Synchronizer
-    function renderStats(delta = null) {
-      const formatRupees = (val) => '₹' + Number(val).toLocaleString('en-IN');
-      
-      document.getElementById('val-money').textContent = formatRupees(gameState.money);
-      document.getElementById('val-security').textContent = Math.max(0, Math.min(100, gameState.security));
-      document.getElementById('val-trust').textContent = Math.max(0, Math.min(100, gameState.trust));
-      document.getElementById('val-reputation').textContent = Math.max(0, Math.min(100, gameState.reputation));
+    function formatCrore(rupees) {
+      if (rupees >= 10000000) {
+        return '₹' + (rupees / 10000000).toFixed(2) + ' Cr';
+      } else if (rupees >= 100000) {
+        return '₹' + (rupees / 100000).toFixed(2) + ' L';
+      }
+      return '₹' + Number(rupees).toLocaleString('en-IN');
+    }
 
-      // Visual meter fills
-      const moneyPercent = Math.max(5, Math.min(100, (gameState.money / 20000) * 100));
-      document.getElementById('meter-money').style.width = moneyPercent + '%';
-      document.getElementById('meter-security').style.width = Math.max(0, Math.min(100, gameState.security)) + '%';
-      document.getElementById('meter-trust').style.width = Math.max(0, Math.min(100, gameState.trust)) + '%';
-      document.getElementById('meter-reputation').style.width = Math.max(0, Math.min(100, gameState.reputation)) + '%';
+    function syncTelemetryUI(delta = null) {
+      document.getElementById('val-funds').textContent = formatCrore(state.funds);
+      document.getElementById('val-security').textContent = Math.max(0, Math.min(100, state.security));
+      document.getElementById('val-trust').textContent = Math.max(0, Math.min(100, state.trust));
+      document.getElementById('val-evidence').textContent = state.evidenceFound;
+      evidenceCounterBtn.textContent = state.evidenceFound;
 
-      // Update stat deltas
-      const stats = [
-        { id: 'money', key: 'money', format: (v) => (v >= 0 ? '+₹' : '-₹') + Math.abs(v).toLocaleString('en-IN') },
-        { id: 'security', key: 'security', format: (v) => (v >= 0 ? '+' : '') + v },
-        { id: 'trust', key: 'trust', format: (v) => (v >= 0 ? '+' : '') + v },
-        { id: 'reputation', key: 'rep', format: (v) => (v >= 0 ? '+' : '') + v }
+      // Fill indicators
+      const fundsPercent = Math.max(0, Math.min(100, (state.funds / 100000000) * 100));
+      document.getElementById('fill-funds').style.width = fundsPercent + '%';
+      document.getElementById('fill-security').style.width = Math.max(0, Math.min(100, state.security)) + '%';
+      document.getElementById('fill-trust').style.width = Math.max(0, Math.min(100, state.trust)) + '%';
+      document.getElementById('fill-evidence').style.width = (state.evidenceFound * 10) + '%';
+
+      // Animated Delta Tags
+      const items = [
+        { id: 'funds', key: 'funds', fmt: v => (v >= 0 ? '+₹' : '-₹') + Math.abs(v / 100000).toFixed(1) + 'L' },
+        { id: 'security', key: 'security', fmt: v => (v >= 0 ? '+' : '') + v },
+        { id: 'trust', key: 'trust', fmt: v => (v >= 0 ? '+' : '') + v },
+        { id: 'evidence', key: 'evidence', fmt: v => '+' + v }
       ];
 
-      stats.forEach(item => {
+      items.forEach(item => {
         const deltaEl = document.getElementById(`delta-${item.id}`);
         const cardEl = document.getElementById(`card-${item.id}`);
-        
         if (delta && delta[item.key] !== undefined && delta[item.key] !== 0) {
           const val = delta[item.key];
-          deltaEl.textContent = item.format(val);
-          deltaEl.className = 'stat-delta ' + (val > 0 ? 'positive' : 'negative');
+          deltaEl.textContent = item.fmt(val);
+          deltaEl.className = 'telemetry-delta ' + (val > 0 ? 'pos' : 'neg');
           cardEl.classList.remove('updated');
-          void cardEl.offsetWidth; // trigger reflow
+          void cardEl.offsetWidth;
           cardEl.classList.add('updated');
         } else {
-          deltaEl.className = 'stat-delta zero';
+          deltaEl.className = 'telemetry-delta hidden';
         }
       });
     }
 
-    function renderCurrentRound() {
-      gameState.stage = 'decision';
-      gameState.selectedOptionIndex = 0; // Default select first choice
+    /* RENDER SCREEN 1: Dramatic Intro */
+    function renderIntro() {
+      state.screen = 'intro';
+      syncTelemetryUI();
 
-      const scenario = BANKING_SCENARIOS[gameState.round - 1];
-      audio.playTone('round');
+      opsScreen.innerHTML = `
+        <div class="intro-hero">
+          <div class="time-alert-stamp">CRITICAL BREACH DETECTED • 03:17 AM</div>
+          <h2 class="hero-title">BANK HEIST<br><span style="color:var(--cyan-neon); font-size: 0.8em;">THE IMPOSSIBLE TRANSACTION</span></h2>
+          <p class="hero-desc">
+            An unauthorized quantum transfer is actively siphoning <strong style="color:var(--emerald-neon);">₹10 Crore</strong> from the bank's digital vaults. The attacker is not an external hacker—they possess internal administrative keys. You have <strong>10 tactical rounds</strong> to stop the transfers, collect forensic evidence, and unmask the insider before the final zero-hour breach.
+          </p>
 
-      let riskClass = 'risk-low';
-      if (scenario.risk === 'Medium') riskClass = 'risk-medium';
-      if (scenario.risk === 'High') riskClass = 'risk-high';
-      if (scenario.risk === 'Critical') riskClass = 'risk-critical';
-
-      let optionsHtml = '';
-      scenario.options.forEach((opt, idx) => {
-        const isSelected = idx === gameState.selectedOptionIndex;
-        optionsHtml += `
-          <button 
-            type="button"
-            class="option-card ${isSelected ? 'selected' : ''}" 
-            id="opt-btn-${idx}"
-            onclick="selectOption(${idx})"
-            role="radio"
-            aria-checked="${isSelected}"
-            tabindex="0"
-            aria-label="Option ${idx + 1}: ${opt.label}. ${opt.detail}"
-          >
-            <div class="option-number-badge">${idx + 1}</div>
-            <div class="option-text-container">
-              <div class="option-label">${opt.label}</div>
-              <div class="option-tradeoff">${opt.detail}</div>
+          <div class="threat-parameters-grid">
+            <div class="param-card">
+              <div class="param-label">Starting Capital</div>
+              <div class="param-val" style="color:var(--emerald-neon);">₹10 Crore</div>
             </div>
-          </button>
-        `;
-      });
-
-      gameplayContainer.innerHTML = `
-        <div class="round-meta-header">
-          <div class="round-pill" aria-label="Round ${gameState.round} of ${gameState.totalRounds}">
-            ROUND ${gameState.round} / ${gameState.totalRounds}
+            <div class="param-card">
+              <div class="param-label">Active Suspects</div>
+              <div class="param-val" style="color:var(--rose-neon);">4 Insiders</div>
+            </div>
+            <div class="param-card">
+              <div class="param-label">Tactical Rounds</div>
+              <div class="param-val" style="color:var(--cyan-neon);">10 Situations</div>
+            </div>
+            <div class="param-card">
+              <div class="param-label">Accessibility</div>
+              <div class="param-val" style="color:var(--amber-neon);">WCAG AAA</div>
+            </div>
           </div>
-          <div class="risk-badge ${riskClass}" aria-label="Threat Level: ${scenario.risk}">
-            Risk Level: ${scenario.risk}
-          </div>
-        </div>
 
-        <div>
-          <h2 class="scenario-title" id="scenario-heading">${scenario.title}</h2>
-          <p class="scenario-description" style="margin-top: 0.6rem;">${scenario.description}</p>
-        </div>
-
-        <div class="options-grid" role="radiogroup" aria-labelledby="scenario-heading">
-          ${optionsHtml}
-        </div>
-
-        <div class="controls-footer">
-          <div style="font-size: 0.9rem; color: var(--text-muted);">
-            Press <span class="key-badge">1</span>–<span class="key-badge">${scenario.options.length}</span> to select, then <span class="key-badge">Enter</span> to confirm.
-          </div>
-          <button id="confirm-decision-btn" class="confirm-btn" onclick="confirmSelection()">
-            <span>Confirm Decision</span>
-            <span class="key-badge" style="background: rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.4);">Enter</span>
+          <button id="btn-start-game" class="btn-execute" onclick="startGame()" style="font-size:1.2rem; padding: 1rem 2.4rem; margin-top: 1rem;" autofocus>
+            <span>START INVESTIGATION</span>
+            <span class="keycap" style="background:rgba(0,0,0,0.4); border-color:#fff;">Enter</span>
           </button>
         </div>
       `;
 
-      // Build comprehensive spoken script for blind audio narration
-      narrateRoundIntroduction(scenario);
+      const speech = "3:17 AM. Critical security breach detected. 10 Crore rupees is at risk. Someone is inside the bank's digital network with internal access. You have 10 rounds to investigate transactions, collect clues, protect funds, and unmask the culprit. Press Enter to start your investigation.";
+      voice.speak(speech);
     }
 
-    function narrateRoundIntroduction(scenario) {
-      let speechText = `Round ${gameState.round} of ${gameState.totalRounds}. `;
-      speechText += `Capital: ${gameState.money} rupees. `;
-      speechText += `Security: ${gameState.security}. `;
-      speechText += `Trust: ${gameState.trust}. `;
-      speechText += `Reputation: ${gameState.reputation}. `;
-      speechText += `Situation: ${scenario.title}. Risk level: ${scenario.risk}. `;
-      speechText += `${scenario.description} `;
+    function startGame() {
+      voice.playSfx('confirm');
+      state.roundIdx = 0;
+      renderCurrentRound();
+    }
 
-      scenario.options.forEach((opt, idx) => {
-        speechText += `Option ${idx + 1}: ${opt.label}. `;
+    /* RENDER SCREEN 2: Tactical Scenario */
+    function renderCurrentRound() {
+      state.screen = 'round';
+      state.selectedOption = 0;
+      voice.playSfx('alert');
+
+      const round = GAME_ROUNDS[state.roundIdx];
+      const threatClass = round.threat === 'extreme' ? 'threat-extreme' : 'threat-elevated';
+
+      let dossierHtml = '';
+      if (round.dossier && round.dossier.length > 0) {
+        dossierHtml = `
+          <div class="intel-dossier" aria-label="Incident Forensic Intel">
+            ${round.dossier.map(d => `
+              <div class="intel-row">
+                <span class="intel-key">${d.key}:</span>
+                <span class="intel-val">${d.val}</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      let optionsHtml = '';
+      if (round.isSuspectRound) {
+        // Suspect selection format
+        optionsHtml = `
+          <div class="suspects-grid" role="radiogroup" aria-label="Select the primary culprit">
+            ${round.options.map((opt, idx) => {
+              const susp = SUSPECTS.find(s => s.id === opt.suspectId);
+              const isSelected = idx === state.selectedOption;
+              return `
+                <button 
+                  type="button"
+                  class="suspect-card ${isSelected ? 'selected' : ''}" 
+                  id="choice-btn-${idx}"
+                  onclick="selectChoice(${idx})"
+                  role="radio"
+                  aria-checked="${isSelected}"
+                  aria-label="Suspect ${idx + 1}: ${susp.name}, ${susp.role}. ${opt.desc}"
+                >
+                  <div class="suspect-header">
+                    <span class="suspect-name">${susp.name}</span>
+                    <span class="keycap">${idx + 1}</span>
+                  </div>
+                  <div class="suspect-role">${susp.role} (${susp.badge})</div>
+                  <div class="suspect-detail">${opt.desc}</div>
+                  <div class="suspect-alibi">Terminal: ${susp.station}</div>
+                </button>
+              `;
+            }).join('')}
+          </div>
+        `;
+      } else {
+        // Standard tactical options format
+        optionsHtml = `
+          <div class="choices-container" role="radiogroup" aria-label="Action Decisions">
+            ${round.options.map((opt, idx) => {
+              const isSelected = idx === state.selectedOption;
+              return `
+                <button 
+                  type="button"
+                  class="choice-card ${isSelected ? 'selected' : ''}" 
+                  id="choice-btn-${idx}"
+                  onclick="selectChoice(${idx})"
+                  role="radio"
+                  aria-checked="${isSelected}"
+                  aria-label="Option ${idx + 1}: ${opt.label}. ${opt.desc}"
+                >
+                  <div class="choice-badge">${idx + 1}</div>
+                  <div class="choice-content">
+                    <div class="choice-heading">${opt.label}</div>
+                    <div class="choice-sub">${opt.desc}</div>
+                  </div>
+                </button>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }
+
+      opsScreen.innerHTML = `
+        <div class="round-indicator-bar">
+          <div class="round-tag">ROUND ${state.roundIdx + 1} OF 10</div>
+          <div class="threat-tag ${threatClass}">Threat: ${round.threat.toUpperCase()}</div>
+        </div>
+
+        <div class="situation-box">
+          <h2 id="round-title">${round.title}</h2>
+          <p class="lead-story">${round.scenario}</p>
+        </div>
+
+        ${dossierHtml}
+
+        ${optionsHtml}
+
+        <div class="action-strip">
+          <div style="font-size: 0.85rem; color: var(--text-muted);">
+            Press <span class="keycap">1</span>–<span class="keycap">${round.options.length}</span> to select, then <span class="keycap">Enter</span> to execute.
+          </div>
+          <button id="btn-confirm-action" class="btn-execute" onclick="confirmChoice()">
+            <span>CONFIRM ACTION</span>
+            <span class="keycap" style="background:rgba(0,0,0,0.3); border-color:#fff;">Enter</span>
+          </button>
+        </div>
+      `;
+
+      narrateRound(round);
+    }
+
+    function narrateRound(round) {
+      let speech = `Round ${state.roundIdx + 1} of 10. `;
+      speech += `Bank funds: ${formatCrore(state.funds)}. `;
+      speech += `Security: ${state.security}. `;
+      speech += `Customer trust: ${state.trust}. `;
+      speech += `Evidence: ${state.evidenceFound} of 10. `;
+      speech += `Situation: ${round.title}. ${round.scenario} `;
+
+      if (round.dossier) {
+        round.dossier.forEach(d => {
+          speech += `${d.key}: ${d.val}. `;
+        });
+      }
+
+      round.options.forEach((opt, idx) => {
+        speech += `Option ${idx + 1}: ${opt.label}. `;
       });
 
-      speechText += `Press 1 to ${scenario.options.length} to choose, then press Enter to confirm.`;
+      speech += `Press 1 to ${round.options.length} to select, and Enter to confirm.`;
 
-      audio.speak(speechText);
+      voice.speak(speech);
     }
 
-    /* Option Selection Logic */
-    window.selectOption = function(idx) {
-      const scenario = BANKING_SCENARIOS[gameState.round - 1];
-      if (idx < 0 || idx >= scenario.options.length) return;
+    function selectChoice(idx) {
+      const round = GAME_ROUNDS[state.roundIdx];
+      if (idx < 0 || idx >= round.options.length) return;
 
-      gameState.selectedOptionIndex = idx;
-      audio.playTone('select');
+      state.selectedOption = idx;
+      voice.playSfx('select');
 
-      // Update visual active classes
-      for (let i = 0; i < scenario.options.length; i++) {
-        const btn = document.getElementById(`opt-btn-${i}`);
+      for (let i = 0; i < round.options.length; i++) {
+        const btn = document.getElementById(`choice-btn-${i}`);
         if (btn) {
           if (i === idx) {
             btn.classList.add('selected');
@@ -1416,336 +1842,384 @@
         }
       }
 
-      // Explicit verbal confirmation for blind players
-      const selectedOpt = scenario.options[idx];
-      const announcement = `Option ${idx + 1} selected: ${selectedOpt.label}. Press Enter to confirm.`;
-      audio.speak(announcement);
-    };
+      const opt = round.options[idx];
+      const announcement = `Option ${idx + 1} selected: ${opt.label}. Press Enter to confirm.`;
+      voice.speak(announcement);
+    }
 
-    window.confirmSelection = function() {
-      if (gameState.stage !== 'decision') return;
+    function confirmChoice() {
+      if (state.screen !== 'round') return;
 
-      const scenario = BANKING_SCENARIOS[gameState.round - 1];
-      const choice = scenario.options[gameState.selectedOptionIndex];
+      const round = GAME_ROUNDS[state.roundIdx];
+      const opt = round.options[state.selectedOption];
+      voice.playSfx('confirm');
 
-      audio.playTone('confirm');
-      gameState.stage = 'consequence';
+      state.screen = 'consequence';
 
       // Apply resource impacts
-      gameState.money = Math.max(0, gameState.money + choice.impact.money);
-      gameState.security = Math.max(0, Math.min(100, gameState.security + choice.impact.security));
-      gameState.trust = Math.max(0, Math.min(100, gameState.trust + choice.impact.trust));
-      gameState.reputation = Math.max(0, Math.min(100, gameState.reputation + choice.impact.rep));
-
-      // Refresh Stats UI with delta animations
-      renderStats(choice.impact);
-
-      // Create Impact tags
-      const formatPill = (label, val, unit = '') => {
-        if (val === 0) return `<span class="impact-pill impact-neutral">${label}: No change</span>`;
-        const isPos = val > 0;
-        const sign = isPos ? '+' : '';
-        return `
-          <span class="impact-pill ${isPos ? 'impact-positive' : 'impact-negative'}">
-            ${label}: ${sign}${unit === '₹' ? (isPos ? '+₹' : '-₹') + Math.abs(val).toLocaleString('en-IN') : sign + val + unit}
-          </span>
-        `;
+      const delta = {
+        funds: opt.impact.funds || 0,
+        security: opt.impact.security || 0,
+        trust: opt.impact.trust || 0,
+        evidence: 0
       };
 
-      const impactsHtml = `
-        <div class="impact-badges-container" aria-label="Impact Summary">
-          ${formatPill('Money', choice.impact.money, '₹')}
-          ${formatPill('Security', choice.impact.security)}
-          ${formatPill('Customer Trust', choice.impact.trust)}
-          ${formatPill('Reputation', choice.impact.rep)}
+      state.funds = Math.max(0, state.funds + delta.funds);
+      state.security = Math.max(0, Math.min(100, state.security + delta.security));
+      state.trust = Math.max(0, Math.min(100, state.trust + delta.trust));
+      state.score += (opt.impact.score || 0);
+
+      // Handle Clue Discovery
+      let clueDiscovered = false;
+      if (opt.clue) {
+        if (!state.unlockedClues.includes(opt.clue)) {
+          state.unlockedClues.push(opt.clue);
+          state.evidenceFound = state.unlockedClues.length;
+          delta.evidence = 1;
+          clueDiscovered = true;
+          setTimeout(() => voice.playSfx('clue'), 200);
+        }
+      }
+
+      // Suspect check in round 9
+      if (round.isSuspectRound) {
+        state.accusedSuspect = opt.suspectId;
+        if (opt.suspectId === 'ryan') {
+          state.identifiedCulpritCorrectly = true;
+        }
+      }
+
+      syncTelemetryUI(delta);
+
+      // Construct Result Screen
+      let clueBox = '';
+      if (opt.clue) {
+        clueBox = `
+          <div class="clue-discovery-banner" role="status" aria-label="New Evidence Logged">
+            <div class="clue-icon">🔎</div>
+            <div>
+              <div class="clue-header">FORENSIC CLUE ADDED TO EVIDENCE LOCKER</div>
+              <div class="clue-text">${opt.clue}</div>
+            </div>
+          </div>
+        `;
+      }
+
+      const pillsHtml = `
+        <div class="resource-pills-row">
+          ${delta.funds !== 0 ? `<span class="pill ${delta.funds > 0 ? 'pill-green' : 'pill-red'}">Funds: ${delta.funds > 0 ? '+' : ''}${formatCrore(delta.funds)}</span>` : '<span class="pill pill-gray">Funds: No change</span>'}
+          ${delta.security !== 0 ? `<span class="pill ${delta.security > 0 ? 'pill-green' : 'pill-red'}">Security: ${delta.security > 0 ? '+' : ''}${delta.security}</span>` : ''}
+          ${delta.trust !== 0 ? `<span class="pill ${delta.trust > 0 ? 'pill-green' : 'pill-red'}">Trust: ${delta.trust > 0 ? '+' : ''}${delta.trust}</span>` : ''}
+          ${clueDiscovered ? `<span class="pill pill-green">Evidence Found (+1)</span>` : ''}
         </div>
       `;
 
-      gameplayContainer.innerHTML = `
-        <div class="round-meta-header">
-          <div class="round-pill">ROUND ${gameState.round} / ${gameState.totalRounds} — OUTCOME</div>
-          <div style="font-weight: 700; color: #94a3b8;">Choice: Option ${gameState.selectedOptionIndex + 1}</div>
+      opsScreen.innerHTML = `
+        <div class="round-indicator-bar">
+          <div class="round-tag">ROUND ${state.roundIdx + 1} • TACTICAL OUTCOME</div>
+          <div style="font-family:'JetBrains Mono',monospace; font-size:0.85rem; color:var(--text-muted);">
+            Choice ${state.selectedOption + 1}: ${opt.label}
+          </div>
         </div>
 
-        <div class="resolution-card">
-          <div class="resolution-header">
+        <div class="consequence-panel">
+          <div class="consequence-title">
             <span>📋</span>
-            <span>Decision Outcome: ${choice.label}</span>
+            <span>Security Incident Report</span>
           </div>
 
-          <p class="resolution-narrative">${choice.outcome}</p>
+          <p class="consequence-narrative">${opt.narrative}</p>
 
-          ${impactsHtml}
+          ${clueBox}
 
-          <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
-            <button id="next-round-btn" class="confirm-btn" onclick="nextRound()" autofocus>
-              <span>${gameState.round < gameState.totalRounds ? 'Proceed to Next Round' : 'View Final Bank Evaluation'}</span>
-              <span class="key-badge" style="background: rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.4);">N</span>
+          ${pillsHtml}
+
+          <div style="margin-top: 0.8rem; display: flex; justify-content: flex-end;">
+            <button id="btn-next-step" class="btn-execute" onclick="advanceGame()" autofocus>
+              <span>${state.roundIdx < 9 ? 'Proceed to Next Situation' : 'Calculate Final Debriefing'}</span>
+              <span class="keycap" style="background:rgba(0,0,0,0.3); border-color:#fff;">N</span>
             </button>
           </div>
         </div>
       `;
 
-      // Announce consequences clearly for blind players
-      let consequenceSpeech = `Decision confirmed. Outcome: ${choice.outcome} `;
-      consequenceSpeech += `Impact: Capital ${choice.impact.money >= 0 ? 'plus ' : 'minus '}${Math.abs(choice.impact.money)} rupees. `;
-      consequenceSpeech += `Security ${choice.impact.security >= 0 ? 'plus ' : ''}${choice.impact.security}. `;
-      consequenceSpeech += `Trust ${choice.impact.trust >= 0 ? 'plus ' : ''}${choice.impact.trust}. `;
-      consequenceSpeech += `Reputation ${choice.impact.rep >= 0 ? 'plus ' : ''}${choice.impact.rep}. `;
-      consequenceSpeech += `Current resources: Capital ${gameState.money} rupees. Security ${gameState.security}. Trust ${gameState.trust}. Reputation ${gameState.reputation}. `;
-      consequenceSpeech += gameState.round < gameState.totalRounds 
-        ? "Press N or Enter to proceed to the next round." 
-        : "Press N or Enter to see your final bank evaluation.";
+      let spokenResult = `Action confirmed. Outcome: ${opt.narrative} `;
+      if (opt.clue) spokenResult += `New clue discovered: ${opt.clue} `;
+      spokenResult += `Current resources: Funds ${formatCrore(state.funds)}. Security ${state.security}. Customer trust ${state.trust}. Evidence ${state.evidenceFound} of 10. `;
+      spokenResult += state.roundIdx < 9 ? "Press N or Enter to advance." : "Press N or Enter to view final evaluation.";
 
-      audio.speak(consequenceSpeech);
+      voice.speak(spokenResult);
+    }
 
-      // Focus the next button for immediate keyboard Enter usage
-      const nextBtn = document.getElementById('next-round-btn');
-      if (nextBtn) nextBtn.focus();
-    };
-
-    /* Next Round Progression */
-    window.nextRound = function() {
-      if (gameState.round < gameState.totalRounds) {
-        gameState.round++;
-        renderStats(); // clear deltas
+    function advanceGame() {
+      if (state.roundIdx < 9) {
+        state.roundIdx++;
+        syncTelemetryUI();
         renderCurrentRound();
       } else {
-        renderGameOverScreen();
+        renderDebrief();
       }
-    };
+    }
 
-    function renderGameOverScreen() {
-      gameState.stage = 'gameover';
-      audio.playTone('confirm');
+    /* RENDER SCREEN 4: Final Evaluation */
+    function renderDebrief() {
+      state.screen = 'debrief';
+      voice.playSfx('confirm');
 
-      // Comprehensive score calculation
-      // Formula weights financial health alongside trust, integrity & safety
-      const moneyScore = Math.floor(gameState.money / 100);
-      const compositeScore = moneyScore + (gameState.security * 2) + (gameState.trust * 2.5) + (gameState.reputation * 2);
-      const finalScore = Math.round(compositeScore);
+      // Comprehensive Scoring Formula out of 10,000
+      // Money preserved: up to 3500 points
+      const moneyScore = Math.floor((state.funds / 100000000) * 3500);
+      // Security: up to 2000 points
+      const secScore = state.security * 20;
+      // Trust: up to 2000 points
+      const trustScore = state.trust * 20;
+      // Evidence: 1500 points (150 per clue)
+      const evidenceScore = state.evidenceFound * 150;
+      // Suspect identification bonus: 1000 points
+      const culpritBonus = state.identifiedCulpritCorrectly ? 1000 : 0;
 
-      let evaluationTitle = "";
-      let summaryText = "";
+      let finalScore = Math.min(10,000, Math.max(0, moneyScore + secScore + trustScore + evidenceScore + culpritBonus));
 
-      if (gameState.trust >= 80 && gameState.security >= 75 && gameState.money >= 9000) {
-        evaluationTitle = "Distinguished Guardian of Public Finance";
-        summaryText = "Extraordinary governance! You masterfully balanced cyber defense, customer transparency, and ethical capital growth. Your bank is heralded nationwide as an untouchable paragon of modern trust.";
-      } else if (gameState.money > 14000 && gameState.trust < 50) {
-        evaluationTitle = "High-Yield Mercenary Financier";
-        summaryText = "You amassed tremendous corporate capital, but alienated grassroot customer trust. While your shareholders applaud short-term profit sheets, regulatory watchdogs have opened rigorous compliance audits.";
-      } else if (gameState.security < 45 || gameState.trust < 40) {
-        evaluationTitle = "Distressed Financial Institution";
-        summaryText = "Severe operational compromises and fractured depositor trust triggered serious capital flight. Emergency recapitalization from regulatory reserves was required to prevent outright insolvency.";
+      let ratingTitle = "";
+      let ratingDesc = "";
+
+      if (state.identifiedCulpritCorrectly && state.funds >= 80000000 && state.security >= 70) {
+        ratingTitle = "MASTER FINANCIAL GUARDIAN (RATING: S+)";
+        ratingDesc = "Flawless forensic leadership. You intercepted every malicious payload, protected over 80% of reserves, and assembled an airtight case that led directly to the arrest of Lead Security Analyst Ryan Cooper.";
+      } else if (state.identifiedCulpritCorrectly) {
+        ratingTitle = "TENACIOUS CYBER INVESTIGATOR (RATING: A)";
+        ratingDesc = "Although the bank suffered financial attrition during the intense cyber assault, your deductive skills held firm. You correctly unmasked Ryan Cooper and neutralized the rogue switch before systemic insolvency occurred.";
+      } else if (state.funds >= 60000000) {
+        ratingTitle = "PRUDENT CASHIER, COMPROMISED VAULT (RATING: B-)";
+        ratingDesc = "You preserved capital through defensive tactics, but failed to identify Ryan Cooper as the insider. He escaped with encrypted bypass tools, leaving the bank vulnerable to future attacks.";
       } else {
-        evaluationTitle = "Prudent Banking Custodian";
-        summaryText = "You navigated turbulent market crises with sound stewardship. While challenging trade-offs required periodic compromises, your institution emerged stable, resilient, and well-positioned for future expansion.";
+        ratingTitle = "CRITICAL INSTITUTIONAL FAILURE (RATING: D)";
+        ratingDesc = "Catastrophic funds drainage and shattered depositor trust. The attacker vanished without trace with millions in foreign crypto, forcing central bank emergency intervention.";
       }
 
-      gameplayContainer.innerHTML = `
-        <div class="gameover-container">
-          <div class="gameover-badge">Ten-Round Challenge Complete</div>
-          <h2 class="final-title">Bank Management Evaluation</h2>
-
-          <div class="final-score-box">
-            <div class="final-score-label">Overall Performance Rating</div>
-            <div class="final-score-num">${finalScore}</div>
+      opsScreen.innerHTML = `
+        <div class="debrief-layout">
+          <div class="time-alert-stamp" style="color:var(--cyan-neon); border-color:var(--cyan-neon); background:rgba(56,189,248,0.12);">
+            INVESTIGATION COMPLETE • OFFICIAL REPORT
           </div>
 
-          <div>
-            <div class="final-verdict-title">${evaluationTitle}</div>
-            <p class="final-summary-text">${summaryText}</p>
+          <h2 style="font-family:'Chakra Petch',sans-serif; font-size: 2.2rem; font-weight:800;">
+            ${ratingTitle}
+          </h2>
+
+          <div class="verdict-box">
+            <div style="font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; font-family:'JetBrains Mono',monospace;">Composite Operational Score</div>
+            <div class="score-banner">${finalScore.toLocaleString()} <span style="font-size:1.2rem; color:var(--text-muted);">/ 10,000</span></div>
+            <div style="margin-top:0.4rem; font-size:1.05rem; color:#cbd5e1; line-height:1.6;">${ratingDesc}</div>
           </div>
 
-          <div class="final-stats-grid">
-            <div class="final-stat-box">
-              <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Ending Capital</div>
-              <div class="final-stat-val" style="color: var(--stat-money);">₹${gameState.money.toLocaleString('en-IN')}</div>
+          <div class="stats-breakdown-grid">
+            <div class="param-card">
+              <div class="param-label">Protected Funds</div>
+              <div class="param-val" style="color:var(--emerald-neon);">${formatCrore(state.funds)}</div>
             </div>
-            <div class="final-stat-box">
-              <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Security Rating</div>
-              <div class="final-stat-val" style="color: var(--stat-security);">${gameState.security}/100</div>
+            <div class="param-card">
+              <div class="param-label">Security Health</div>
+              <div class="param-val" style="color:var(--cyan-neon);">${state.security}/100</div>
             </div>
-            <div class="final-stat-box">
-              <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Customer Trust</div>
-              <div class="final-stat-val" style="color: var(--stat-trust);">${gameState.trust}/100</div>
+            <div class="param-card">
+              <div class="param-label">Customer Trust</div>
+              <div class="param-val" style="color:var(--amber-neon);">${state.trust}/100</div>
             </div>
-            <div class="final-stat-box">
-              <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Reputation</div>
-              <div class="final-stat-val" style="color: var(--stat-reputation);">${gameState.reputation}/100</div>
+            <div class="param-card">
+              <div class="param-label">Suspect Solved</div>
+              <div class="param-val" style="color:${state.identifiedCulpritCorrectly ? 'var(--emerald-neon)' : 'var(--rose-neon)'};">
+                ${state.identifiedCulpritCorrectly ? 'SOLVED (Ryan)' : 'FAILED'}
+              </div>
             </div>
           </div>
 
-          <button id="restart-game-btn" class="confirm-btn" onclick="restartGame()" style="padding: 1rem 2.2rem; font-size: 1.1rem;" autofocus>
-            <span>Play Again</span>
-            <span class="key-badge" style="background: rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.4);">Enter</span>
+          <button id="btn-replay" class="btn-execute" onclick="restartEntireGame()" style="font-size:1.15rem; padding: 0.9rem 2.2rem;" autofocus>
+            <span>PLAY AGAIN</span>
+            <span class="keycap" style="background:rgba(0,0,0,0.4); border-color:#fff;">Enter</span>
           </button>
         </div>
       `;
 
-      let finalSpeech = `The banking challenge is complete. `;
-      finalSpeech += `Your final performance rating is ${finalScore}. `;
-      finalSpeech += `Evaluation: ${evaluationTitle}. `;
-      finalSpeech += `${summaryText} `;
-      finalSpeech += `Final statistics: Capital ${gameState.money} rupees. Security ${gameState.security}. Trust ${gameState.trust}. Reputation ${gameState.reputation}. `;
-      finalSpeech += `Press Enter or N to restart the game.`;
+      let speech = `Investigation complete. Your performance rating is ${ratingTitle}. `;
+      speech += `Final score: ${finalScore} out of 10,000. `;
+      speech += `${ratingDesc} `;
+      speech += `Protected capital: ${formatCrore(state.funds)}. Security: ${state.security}. Customer trust: ${state.trust}. `;
+      speech += state.identifiedCulpritCorrectly ? "You correctly identified Ryan as the attacker. " : "You failed to identify the correct attacker. ";
+      speech += "Press Enter to play again.";
 
-      audio.speak(finalSpeech);
-
-      const restartBtn = document.getElementById('restart-game-btn');
-      if (restartBtn) restartBtn.focus();
+      voice.speak(speech);
     }
 
-    /* Game Restart */
-    window.restartGame = function() {
-      audio.stopSpeech();
-      gameState.round = 1;
-      gameState.money = 10000;
-      gameState.security = 70;
-      gameState.trust = 70;
-      gameState.reputation = 70;
-      gameState.selectedOptionIndex = 0;
-      gameState.stage = 'decision';
-      renderStats();
-      renderCurrentRound();
-    };
+    function restartEntireGame() {
+      voice.stop();
+      state.screen = 'intro';
+      state.roundIdx = 0;
+      state.funds = 100000000;
+      state.security = 70;
+      state.trust = 70;
+      state.evidenceFound = 0;
+      state.score = 0;
+      state.unlockedClues = [];
+      state.selectedOption = 0;
+      state.accusedSuspect = null;
+      state.identifiedCulpritCorrectly = false;
+      renderIntro();
+    }
 
-    window.addEventListener('keydown', (e) => {
-      // Don't intercept shortcuts if user is inside an input (none exist, but standard practice)
-      if (['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase())) {
-        return;
+    /* Modals & Overlays */
+    function toggleEvidenceModal(show) {
+      if (show) {
+        if (state.unlockedClues.length === 0) {
+          evidenceModalBody.innerHTML = `
+            <div style="text-align:center; padding: 2rem 1rem; color:var(--text-muted);">
+              <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">📂</div>
+              <p>No forensic clues unlocked yet. Make decisive investigation choices during active rounds to uncover insider evidence.</p>
+            </div>
+          `;
+          voice.speak("Evidence locker opened. No forensic clues collected yet. Press Escape to return.");
+        } else {
+          evidenceModalBody.innerHTML = state.unlockedClues.map((clue, idx) => `
+            <div style="background:#090e18; border:1px solid #1e293b; border-left:3px solid var(--amber-neon); border-radius:6px; padding:0.8rem 1rem; font-family:'JetBrains Mono',monospace; font-size:0.9rem; color:#fef08a;">
+              <strong style="color:var(--cyan-neon);">EVIDENCE #${idx + 1}:</strong> ${clue}
+            </div>
+          `).join('');
+
+          let summary = `Evidence locker opened. ${state.unlockedClues.length} clues discovered. `;
+          state.unlockedClues.forEach((c, i) => {
+            summary += `Clue ${i + 1}: ${c}. `;
+          });
+          summary += "Press Escape to close.";
+          voice.speak(summary);
+        }
+        evidenceModal.style.display = 'flex';
+      } else {
+        evidenceModal.style.display = 'none';
+        voice.speak("Evidence locker closed.");
       }
+    }
 
+    function toggleHelpModal(show) {
+      if (show) {
+        helpModal.style.display = 'flex';
+        voice.speak("Help manual opened. Use number keys 1 through 4 to pick choices, Enter to confirm, N to advance, E for evidence locker, S to toggle speech, and Escape to dismiss. Press Escape to return.");
+      } else {
+        helpModal.style.display = 'none';
+        voice.speak("Help manual dismissed.");
+      }
+    }
+
+    /* Global Keyboard Controller */
+    window.addEventListener('keydown', (e) => {
       const key = e.key;
 
-      // Handle Help Modal toggles (Esc or H)
+      // Handle Modal Closures
       if (key === 'Escape') {
+        if (evidenceModal.style.display !== 'none') {
+          toggleEvidenceModal(false);
+          return;
+        }
         if (helpModal.style.display !== 'none') {
-          closeHelp();
+          toggleHelpModal(false);
           return;
         }
       }
-      if (key === 'h' || key === 'H') {
-        toggleHelp();
+
+      // If a modal is open, don't trigger game actions
+      if (evidenceModal.style.display !== 'none' || helpModal.style.display !== 'none') {
         return;
       }
 
-      // If Help Modal is open, do not execute game shortcuts
-      if (helpModal.style.display !== 'none') return;
-
-      // Speech Toggle (S key)
+      // Quick Toggles
       if (key === 's' || key === 'S') {
         e.preventDefault();
         toggleSpeechHandler();
         return;
       }
-
-      // Repeat current information (R key)
       if (key === 'r' || key === 'R') {
         e.preventDefault();
-        repeatInformation();
+        repeatNarration();
+        return;
+      }
+      if (key === 'e' || key === 'E') {
+        e.preventDefault();
+        toggleEvidenceModal(true);
+        return;
+      }
+      if (key === 'h' || key === 'H') {
+        e.preventDefault();
+        toggleHelpModal(true);
         return;
       }
 
-      // In Decision Stage:
-      if (gameState.stage === 'decision') {
-        const scenario = BANKING_SCENARIOS[gameState.round - 1];
-        
-        // Option 1-4 selection
-        if (['1', '2', '3', '4'].includes(key)) {
-          const optIdx = parseInt(key, 10) - 1;
-          if (optIdx < scenario.options.length) {
-            e.preventDefault();
-            selectOption(optIdx);
-          }
-          return;
-        }
-
-        // Confirm selection with Enter or Space
+      // Contextual Gameplay Keys
+      if (state.screen === 'intro') {
         if (key === 'Enter' || key === ' ') {
           e.preventDefault();
-          confirmSelection();
-          return;
+          startGame();
         }
-      }
-
-      // In Consequence Stage:
-      if (gameState.stage === 'consequence') {
+      } else if (state.screen === 'round') {
+        const round = GAME_ROUNDS[state.roundIdx];
+        if (['1', '2', '3', '4'].includes(key)) {
+          const idx = parseInt(key, 10) - 1;
+          if (idx < round.options.length) {
+            e.preventDefault();
+            selectChoice(idx);
+          }
+        } else if (key === 'Enter' || key === ' ') {
+          e.preventDefault();
+          confirmChoice();
+        }
+      } else if (state.screen === 'consequence') {
         if (key === 'n' || key === 'N' || key === 'Enter' || key === ' ') {
           e.preventDefault();
-          nextRound();
-          return;
+          advanceGame();
         }
-      }
-
-      // In Game Over Stage:
-      if (gameState.stage === 'gameover') {
+      } else if (state.screen === 'debrief') {
         if (key === 'Enter' || key === ' ' || key === 'n' || key === 'N') {
           e.preventDefault();
-          restartGame();
-          return;
+          restartEntireGame();
         }
       }
     });
 
-    /* Toolbar Event Handlers */
     function toggleSpeechHandler() {
-      const enabled = audio.toggleSpeech();
-      ttsStatusText.textContent = enabled ? 'ON' : 'OFF';
-      ttsIcon.textContent = enabled ? '🔊' : '🔇';
-      ttsToggleBtn.classList.toggle('active', enabled);
-      ttsToggleBtn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
-      
-      const msg = enabled ? "Speech narration enabled." : "Speech narration muted.";
-      updateLiveCaption(msg);
-      announceSR(msg);
-      if (enabled) {
-        audio.speak("Speech narration enabled.");
+      const active = voice.toggle();
+      ttsLabel.textContent = active ? 'ON' : 'OFF';
+      ttsIcon.textContent = active ? '🔊' : '🔇';
+      ttsToggleBtn.classList.toggle('active', active);
+      ttsToggleBtn.setAttribute('aria-pressed', active ? 'true' : 'false');
+
+      const msg = active ? "Speech narration activated." : "Speech narration muted.";
+      updateCaption(msg);
+      announceScreenReader(msg);
+      if (active) voice.speak("Speech active.");
+    }
+
+    function repeatNarration() {
+      if (state.screen === 'intro') {
+        voice.speak("Bank Heist: The Impossible Transaction. 10 Crore rupees is being stolen by an insider. Press Enter to start.");
+      } else if (state.screen === 'round') {
+        narrateRound(GAME_ROUNDS[state.roundIdx]);
+      } else if (state.screen === 'consequence') {
+        const round = GAME_ROUNDS[state.roundIdx];
+        const opt = round.options[state.selectedOption];
+        let rep = `Outcome: ${opt.narrative} Funds: ${formatCrore(state.funds)}. Security: ${state.security}. Customer trust: ${state.trust}. Press N to proceed.`;
+        voice.speak(rep);
+      } else if (state.screen === 'debrief') {
+        renderDebrief();
       }
     }
 
-    function repeatInformation() {
-      if (gameState.stage === 'decision') {
-        const scenario = BANKING_SCENARIOS[gameState.round - 1];
-        narrateRoundIntroduction(scenario);
-      } else if (gameState.stage === 'consequence') {
-        const scenario = BANKING_SCENARIOS[gameState.round - 1];
-        const choice = scenario.options[gameState.selectedOptionIndex];
-        let repText = `Outcome: ${choice.outcome} Capital is ${gameState.money} rupees. Security is ${gameState.security}. Trust is ${gameState.trust}. Reputation is ${gameState.reputation}. Press N to proceed.`;
-        audio.speak(repText);
-      } else if (gameState.stage === 'gameover') {
-        audio.speak("Challenge complete. Press Enter to restart.");
-      }
-    }
-
-    function toggleHelp() {
-      if (helpModal.style.display === 'none') {
-        helpModal.style.display = 'flex';
-        closeHelpBtn.focus();
-        audio.speak("Help dialog opened. Use number keys 1 through 4 to select options, Enter to confirm, N for next round, R to repeat, and Escape to close help.");
-      } else {
-        closeHelp();
-      }
-    }
-
-    function closeHelp() {
-      helpModal.style.display = 'none';
-      audio.speak("Help dialog closed.");
-      // Return focus to active element
-      if (gameState.stage === 'decision') {
-        const currentBtn = document.getElementById(`opt-btn-${gameState.selectedOptionIndex}`);
-        if (currentBtn) currentBtn.focus();
-      }
-    }
-
+    // Direct Button Listeners
     ttsToggleBtn.addEventListener('click', toggleSpeechHandler);
-    repeatBtn.addEventListener('click', repeatInformation);
-    helpBtn.addEventListener('click', toggleHelp);
-    closeHelpBtn.addEventListener('click', closeHelp);
+    repeatBtn.addEventListener('click', repeatNarration);
+    document.getElementById('btn-evidence-modal').addEventListener('click', () => toggleEvidenceModal(true));
+    document.getElementById('btn-help-modal').addEventListener('click', () => toggleHelpModal(true));
 
+    // Boot
     window.addEventListener('DOMContentLoaded', () => {
-      renderStats();
-      renderCurrentRound();
+      renderIntro();
     });
   </script>
 </body>
