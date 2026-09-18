@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BANKSHIFT — The Accessible Banking Challenge</title>
+  <!-- Modern Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-main: #0b0f19;
+      --bg-surface: #131a29;
+      --bg-surface-elevated: #1e293b;
+      --bg-surface-hover: #26354a;
+      --border-color: #334155;
+      --border-focus: #38bdf8;
+      
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      
+      --accent-blue: #38bdf8;
+      --accent-blue-bg: rgba(56, 189, 248, 0.12);
+      
+      --stat-money: #34d399;
+      --stat-security: #38bdf8;
+      --stat-trust: #f472b6;
+      --stat-reputation: #fbbf24;
+      
+      --positive: #22c55e;
+      --negative: #ef4444;
+      --neutral: #94a3b8;
+      
+      --focus-ring: 0 0 0 3px #ffffff, 0 0 0 6px #38bdf8;
+      --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+    }
+
+    /* High-contrast accessible reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Strict Focus Styles for Blind/Keyboard Nav users */
+    *:focus-visible {
+      outline: none !important;
+      box-shadow: var(--focus-ring) !important;
+      z-index: 50;
+      position: relative;
+    }
+
+    /* Screen Reader Only Utility */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Skip link for rapid screen reader navigation */
+    .skip-link {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #38bdf8;
+      color: #0b0f19;
+      padding: 12px 20px;
+      font-weight: 700;
+      border-radius: 8px;
+      z-index: 9999;
+      transform: translateY(-150%);
+      transition: transform 0.2s ease;
+      text-decoration: none;
+    }
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    /* Layout Containers */
+    .app-container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 1.25rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Header styling */
+    header {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .brand-title {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-title h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .brand-title p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .accessibility-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .action-button {
+      background: var(--bg-surface-elevated);
+      color: var(--text-primary);
+      border: 1.5px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.15s ease-in-out;
+      user-select: none;
+    }
+    .action-button:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--accent-blue);
+      color: #fff;
+    }
+    .action-button:active {
+      transform: scale(0.98);
+    }
+    .action-button.active {
+      background: var(--accent-blue-bg);
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+    }
+
+    /* Key indicator pills */
+    .key-badge {
+      display: inline-block;
+      background: #0f172a;
+      border: 1px solid #475569;
+      color: #f8fafc;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+    }
+
+    /* Dashboard Stats Grid */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    .stat-card {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.15rem 1.25rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+    .stat-card.updated {
+      animation: pulseHighlight 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes pulseHighlight {
+      0% { border-color: var(--border-focus); transform: scale(1.02); }
+      100% { border-color: var(--border-color); transform: scale(1); }
+    }
+
+    .stat-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .stat-name {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-delta {
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      display: inline-block;
+      margin-left: 0.5rem;
+    }
+    .stat-delta.positive {
+      background: rgba(34, 197, 94, 0.2);
+      color: #4ade80;
+    }
+    .stat-delta.negative {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+    }
+    .stat-delta.zero {
+      display: none;
+    }
+
+    .meter-container {
+      width: 100%;
+      height: 8px;
+      background: #0f172a;
+      border-radius: 9999px;
+      overflow: hidden;
+      margin-top: 0.6rem;
+      border: 1px solid #1e293b;
+    }
+    .meter-fill {
+      height: 100%;
+      transition: width 0.4s ease-out;
+    }
+
+    /* Live Speech / Transcript Display Bar (Deaf Accessibility) */
+    .transcript-bar {
+      background: #0f172a;
+      border: 1.5px solid #2563eb;
+      border-radius: 10px;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+    .transcript-icon {
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+      color: #60a5fa;
+    }
+    .transcript-content {
+      flex: 1;
+      font-size: 0.925rem;
+      line-height: 1.45;
+      color: #f1f5f9;
+    }
+    .transcript-tag {
+      display: inline-block;
+      font-weight: 700;
+      font-size: 0.75rem;
+      color: #93c5fd;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-right: 0.5rem;
+    }
+
+    /* Main Gameplay Scenario Card */
+    .gameplay-area {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.75rem;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .round-meta-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1rem;
+    }
+
+    .round-pill {
+      background: var(--accent-blue-bg);
+      border: 1px solid var(--accent-blue);
+      color: var(--accent-blue);
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      letter-spacing: 0.05em;
+    }
+
+    .risk-badge {
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.3rem 0.75rem;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: 1px solid transparent;
+    }
+    .risk-low { background: rgba(34, 197, 94, 0.15); color: #4ade80; border-color: rgba(34, 197, 94, 0.4); }
+    .risk-medium { background: rgba(251, 191, 36, 0.15); color: #fde047; border-color: rgba(251, 191, 36, 0.4); }
+    .risk-high { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: rgba(239, 68, 68, 0.4); }
+    .risk-critical { background: rgba(225, 29, 72, 0.25); color: #fda4af; border-color: #e11d48; font-weight: 900; }
+
+    .scenario-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.25;
+    }
+    .scenario-description {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Options Selection List */
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .option-card {
+      background: var(--bg-surface-elevated);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.15rem 1.25rem;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 1.1rem;
+      color: var(--text-primary);
+      width: 100%;
+      font-family: inherit;
+      transition: all 0.15s ease-in-out;
+      position: relative;
+    }
+    .option-card:hover {
+      background: var(--bg-surface-hover);
+      border-color: #64748b;
+    }
+    .option-card.selected {
+      border-color: var(--accent-blue);
+      background: rgba(56, 189, 248, 0.12);
+      box-shadow: 0 0 0 1px var(--accent-blue);
+    }
+
+    .option-number-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: #0f172a;
+      border: 1.5px solid #475569;
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .option-card.selected .option-number-badge {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: #0b0f19;
+    }
+
+    .option-text-container {
+      flex: 1;
+    }
+    .option-label {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.2rem;
+    }
+    .option-tradeoff {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Decision Confirmation / Action Bar */
+    .controls-footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .confirm-btn {
+      background: #0284c7;
+      color: #ffffff;
+      border: 2px solid #38bdf8;
+      border-radius: 8px;
+      padding: 0.85rem 1.85rem;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+      transition: all 0.15s ease;
+    }
+    .confirm-btn:hover:not(:disabled) {
+      background: #0369a1;
+      transform: translateY(-1px);
+    }
+    .confirm-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      box-shadow: none;
+      border-color: #475569;
+      background: #1e293b;
+    }
+
+    /* Consequence Resolution Box */
+    .resolution-card {
+      background: #0f172a;
+      border: 2px solid #38bdf8;
+      border-radius: 12px;
+      padding: 1.5rem;
+      animation: fadeIn 0.25s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .resolution-header {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #38bdf8;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .resolution-narrative {
+      font-size: 1.05rem;
+      color: #f1f5f9;
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+
+    .impact-badges-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 1.25rem;
+    }
+    .impact-pill {
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      border: 1px solid transparent;
+    }
+    .impact-positive {
+      background: rgba(34, 197, 94, 0.15);
+      color: #4ade80;
+      border-color: rgba(34, 197, 94, 0.4);
+    }
+    .impact-negative {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+    .impact-neutral {
+      background: rgba(148, 163, 184, 0.15);
+      color: #cbd5e1;
+      border-color: rgba(148, 163, 184, 0.3);
+    }
+
+    /* Shortcuts bar footer */
+    .shortcuts-reminder {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      font-size: 0.825rem;
+      color: var(--text-muted);
+    }
+    .shortcut-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Game Over / Summary Screen */
+    .gameover-container {
+      background: var(--bg-surface);
+      border: 2px solid var(--accent-blue);
+      border-radius: 16px;
+      padding: 2.25rem 2rem;
+      text-align: center;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .gameover-badge {
+      background: var(--accent-blue-bg);
+      color: var(--accent-blue);
+      border: 1px solid var(--accent-blue);
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .final-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+    .final-score-box {
+      background: #0f172a;
+      border: 2px solid #334155;
+      border-radius: 12px;
+      padding: 1.25rem 2.5rem;
+      margin: 0.5rem 0;
+    }
+    .final-score-label {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .final-score-num {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #38bdf8;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .final-verdict-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fbbf24;
+      margin-bottom: 0.5rem;
+    }
+    .final-summary-text {
+      max-width: 680px;
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+    .final-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      width: 100%;
+      max-width: 720px;
+      margin: 1rem 0;
+    }
+    @media (max-width: 640px) {
+      .final-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .final-stat-box {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+    .final-stat-val {
+      font-size: 1.35rem;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      color: #ffffff;
+    }
+
+    /* Modal / Help Overlay */
+    .help-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 1000;
+    }
+    .help-modal-box {
+      background: var(--bg-surface);
+      border: 2px solid var(--border-focus);
+      border-radius: 14px;
+      max-width: 600px;
+      width: 100%;
+      padding: 1.75rem;
+      color: #f8fafc;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Skip link for Screen Readers -->
+  <a href="#main-game-content" class="skip-link">Skip to banking decisions</a>
+
+  <!-- ARIA Live Announcements for Blind Screen Readers -->
+  <div id="sr-announcements" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
+
+  <div class="app-container">
+    
+    <header role="banner">
+      <div class="brand-title">
+        <h1>
+          <span>🏛️</span>
+          <span>BANKSHIFT</span>
+        </h1>
+        <p>The Accessible Banking Challenge • Universal Accessibility</p>
+      </div>
+
+      <div class="accessibility-toolbar" role="toolbar" aria-label="Accessibility and game tools">
+        <button id="tts-toggle-btn" class="action-button active" aria-pressed="true" title="Toggle automatic speech narration (Press S)">
+          <span id="tts-icon" aria-hidden="true">🔊</span>
+          <span>Speech: <strong id="tts-status-text">ON</strong></span>
+          <span class="key-badge">S</span>
+        </button>
+
+        <button id="repeat-btn" class="action-button" title="Repeat situation and choices aloud (Press R)">
+          <span aria-hidden="true">🔄</span>
+          <span>Repeat Info</span>
+          <span class="key-badge">R</span>
+        </button>
+
+        <button id="help-btn" class="action-button" title="View keyboard controls & instructions (Press H)">
+          <span aria-hidden="true">⌨️</span>
+          <span>Controls</span>
+          <span class="key-badge">H</span>
+        </button>
+      </div>
+    </header>
+
+    <section class="transcript-bar" aria-label="Live Audio Transcript">
+      <div class="transcript-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+      </div>
+      <div class="transcript-content">
+        <span class="transcript-tag">Audio Transcript</span>
+        <span id="live-caption-text">Welcome to BANKSHIFT. Initializing your banking dashboard...</span>
+      </div>
+    </section>
+
+    <section class="stats-bar" aria-label="Current Bank Resources" id="stats-section">
+      
+      <!-- Money Card -->
+      <div class="stat-card" id="card-money">
+        <div class="stat-label-row">
+          <span class="stat-name">Capital (Money)</span>
+          <span class="stat-delta zero" id="delta-money">+₹0</span>
+        </div>
+        <div class="stat-value" style="color: var(--stat-money);">
+          <span id="val-money">₹10,000</span>
+        </div>
+        <div class="meter-container" aria-hidden="true">
+          <div class="meter-fill" id="meter-money" style="width: 50%; background-color: var(--stat-money);"></div>
+        </div>
+      </div>
+
+      <!-- Security Card -->
+      <div class="stat-card" id="card-security">
+        <div class="stat-label-row">
+          <span class="stat-name">Bank Security</span>
+          <span class="stat-delta zero" id="delta-security">+0</span>
+        </div>
+        <div class="stat-value" style="color: var(--stat-security);">
+          <span id="val-security">70</span><span style="font-size: 0.95rem; color: var(--text-muted);">/100</span>
+        </div>
+        <div class="meter-container" aria-hidden="true">
+          <div class="meter-fill" id="meter-security" style="width: 70%; background-color: var(--stat-security);"></div>
+        </div>
+      </div>
+
+      <!-- Customer Trust Card -->
+      <div class="stat-card" id="card-trust">
+        <div class="stat-label-row">
+          <span class="stat-name">Customer Trust</span>
+          <span class="stat-delta zero" id="delta-trust">+0</span>
+        </div>
+        <div class="stat-value" style="color: var(--stat-trust);">
+          <span id="val-trust">70</span><span style="font-size: 0.95rem; color: var(--text-muted);">/100</span>
+        </div>
+        <div class="meter-container" aria-hidden="true">
+          <div class="meter-fill" id="meter-trust" style="width: 70%; background-color: var(--stat-trust);"></div>
+        </div>
+      </div>
+
+      <!-- Reputation Card -->
+      <div class="stat-card" id="card-reputation">
+        <div class="stat-label-row">
+          <span class="stat-name">Market Reputation</span>
+          <span class="stat-delta zero" id="delta-reputation">+0</span>
+        </div>
+        <div class="stat-value" style="color: var(--stat-reputation);">
+          <span id="val-reputation">70</span><span style="font-size: 0.95rem; color: var(--text-muted);">/100</span>
+        </div>
+        <div class="meter-container" aria-hidden="true">
+          <div class="meter-fill" id="meter-reputation" style="width: 70%; background-color: var(--stat-reputation);"></div>
+        </div>
+      </div>
+
+    </section>
+
+    <main id="main-game-content" class="gameplay-area" role="main">
+      <!-- Dynamic game state content gets rendered here via JavaScript -->
+    </main>
+
+    <!-- Keyboard Navigation Reference Footer -->
+    <footer class="shortcuts-reminder" aria-label="Keyboard Shortcuts Guide">
+      <div class="shortcut-item">
+        <span class="key-badge">1</span>–<span class="key-badge">4</span>
+        <span>Select Option</span>
+      </div>
+      <div class="shortcut-item">
+        <span class="key-badge">Enter</span> / <span class="key-badge">Space</span>
+        <span>Confirm Choice</span>
+      </div>
+      <div class="shortcut-item">
+        <span class="key-badge">N</span>
+        <span>Next Round</span>
+      </div>
+      <div class="shortcut-item">
+        <span class="key-badge">R</span>
+        <span>Repeat Narration</span>
+      </div>
+      <div class="shortcut-item">
+        <span class="key-badge">S</span>
+        <span>Mute / Unmute Speech</span>
+      </div>
+      <div class="shortcut-item">
+        <span class="key-badge">H</span>
+        <span>Help Modal</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Help & Instructions Modal -->
+  <div id="help-modal" class="help-modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="help-title">
+    <div class="help-modal-box">
+      <h2 id="help-title" style="font-size: 1.4rem; margin-bottom: 1rem; color: #38bdf8;">BANKSHIFT Accessibility & Keyboard Controls</h2>
+      <div style="font-size: 0.95rem; line-height: 1.6; color: #cbd5e1; margin-bottom: 1.25rem;">
+        <p style="margin-bottom: 0.75rem;"><strong>Universal Design Philosophy:</strong> BANKSHIFT is 100% playable without sight (using speech narration and screen readers), without hearing (every event is visually subtitled and annotated), and without speech (no voice commands needed).</p>
+        <ul style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
+          <li><span class="key-badge">1</span>, <span class="key-badge">2</span>, <span class="key-badge">3</span>, <span class="key-badge">4</span> : Choose decisions</li>
+          <li><span class="key-badge">Enter</span> or <span class="key-badge">Space</span> : Confirm selected decision</li>
+          <li><span class="key-badge">N</span> : Proceed to next round</li>
+          <li><span class="key-badge">R</span> : Repeat round description and choices aloud</li>
+          <li><span class="key-badge">S</span> : Toggle Voice Speech Synthesis</li>
+          <li><span class="key-badge">Esc</span> or <span class="key-badge">H</span> : Close this window</li>
+        </ul>
+        <p>You can also use a standard mouse or touch screen at any time.</p>
+      </div>
+      <div style="text-align: right;">
+        <button id="close-help-btn" class="action-button active" style="padding: 0.6rem 1.4rem;">Close (Esc)</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* Accessible Tone & Speech Synthesizer */
+    class AccessibleAudioEngine {
+      constructor() {
+        this.speechEnabled = true;
+        this.synth = window.speechSynthesis || null;
+        this.currentUtterance = null;
+        this.audioCtx = null;
+        
+        // Voice caching
+        this.voice = null;
+        if (this.synth) {
+          const updateVoices = () => {
+            const voices = this.synth.getVoices();
+            // Prioritize clear English voices
+            this.voice = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Daniel'))) 
+                         || voices.find(v => v.lang.startsWith('en')) 
+                         || voices[0];
+          };
+          updateVoices();
+          if (this.synth.onvoiceschanged !== undefined) {
+            this.synth.onvoiceschanged = updateVoices;
+          }
+        }
+      }
+
+      initAudioCtx() {
+        if (!this.audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) {
+            this.audioCtx = new AudioContextClass();
+          }
+        }
+      }
+
+      // Pleasant accessible non-essential sound cues for players with hearing
+      playTone(type) {
+        try {
+          this.initAudioCtx();
+          if (!this.audioCtx) return;
+          if (this.audioCtx.state === 'suspended') {
+            this.audioCtx.resume();
+          }
+
+          const osc = this.audioCtx.createOscillator();
+          const gain = this.audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(this.audioCtx.destination);
+
+          const now = this.audioCtx.currentTime;
+
+          if (type === 'select') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(440, now);
+            osc.frequency.exponentialRampToValueAtTime(587, now + 0.08);
+            gain.gain.setValueAtTime(0.12, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+            osc.start(now);
+            osc.stop(now + 0.08);
+          } else if (type === 'confirm') {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(523.25, now);
+            osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.15);
+            gain.gain.setValueAtTime(0.18, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+            osc.start(now);
+            osc.stop(now + 0.15);
+          } else if (type === 'round') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(392, now);
+            osc.frequency.exponentialRampToValueAtTime(784, now + 0.2);
+            gain.gain.setValueAtTime(0.15, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+            osc.start(now);
+            osc.stop(now + 0.2);
+          }
+        } catch (e) {
+          // Audio context might fail due to autoplay restrictions; silently degrade
+        }
+      }
+
+      // Unified Speech narration with cancellation guard
+      speak(text, onEndCallback = null) {
+        // Always display on visual live caption bar for deaf accessibility
+        updateLiveCaption(text);
+
+        // Announce via aria-live for blind players using their own screen reader
+        announceSR(text);
+
+        if (!this.speechEnabled || !this.synth) {
+          if (onEndCallback) onEndCallback();
+          return;
+        }
+
+        try {
+          this.synth.cancel(); // Stop any overlapping previous speeches
+
+          // Clean speech text (e.g. speak "rupees" instead of symbol)
+          const cleanedText = text
+            .replace(/₹/g, ' rupees ')
+            .replace(/\//g, ' out of ')
+            .replace(/\+/g, ' plus ')
+            .replace(/-/g, ' minus ');
+
+          const utterance = new SpeechSynthesisUtterance(cleanedText);
+          if (this.voice) utterance.voice = this.voice;
+          utterance.rate = 1.02;
+          utterance.pitch = 1.0;
+
+          if (onEndCallback) {
+            utterance.onend = onEndCallback;
+            utterance.onerror = onEndCallback;
+          }
+
+          this.currentUtterance = utterance;
+          this.synth.speak(utterance);
+        } catch (err) {
+          console.warn('Speech synthesis error:', err);
+          if (onEndCallback) onEndCallback();
+        }
+      }
+
+      stopSpeech() {
+        if (this.synth) {
+          this.synth.cancel();
+        }
+      }
+
+      toggleSpeech() {
+        this.speechEnabled = !this.speechEnabled;
+        if (!this.speechEnabled) {
+          this.stopSpeech();
+        }
+        return this.speechEnabled;
+      }
+    }
+
+    const BANKING_SCENARIOS = [
+      {
+        id: 1,
+        title: "Suspicious Large Transfer",
+        risk: "Medium",
+        description: "An automated flag highlights a series of ₹2,500 wire transfers heading overseas from multiple elderly account holders within minutes. The accounts have never initiated international wires before.",
+        options: [
+          {
+            label: "Emergency Freeze & Manual Verification",
+            detail: "Halt the transactions immediately and mandate two-factor phone calls before releasing funds.",
+            impact: { money: -200, security: +12, trust: +6, rep: +5 },
+            outcome: "Fraud stopped! You caught an active overseas phishing ring. Minor operational call center costs incurred, but customers are grateful for protecting their life savings."
+          },
+          {
+            label: "Allow Transfers & Investigate Later",
+            detail: "Permit the wires to prevent customer annoyance; run retrospective forensic audit tomorrow.",
+            impact: { money: -1500, security: -15, trust: -14, rep: -10 },
+            outcome: "Disaster! It was an elder-fraud syndicate. The money vanished off-shore. Victims are furious at the bank's negligence."
+          },
+          {
+            label: "Selective Delay on Largest Accounts",
+            detail: "Delay transfers over ₹3,000 for 12 hours while passing smaller transactions through.",
+            impact: { money: -400, security: +3, trust: -4, rep: +1 },
+            outcome: "Mixed results. You intercepted part of the scam, but fraudsters slipped several lower-denomination transactions through."
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: "Risky High-Yield Commercial Loan",
+        risk: "High",
+        description: "A fast-growing green energy tech startup requests a ₹3,000 credit line at an attractive 18% interest return. However, their collateral consists largely of unproven patents.",
+        options: [
+          {
+            label: "Approve Full Loan with Patent Collateral",
+            detail: "Disburse the entire ₹3,000 to maximize potential future quarterly yields.",
+            impact: { money: +1800, security: -8, trust: +4, rep: +8 },
+            outcome: "The startup secured a government clean-power grant! They repaid early with a generous return on investment, cementing your innovation reputation."
+          },
+          {
+            label: "Reject Loan Application Outright",
+            detail: "Strict adherence to traditional low-risk underwriting guidelines.",
+            impact: { money: 0, security: +6, trust: -6, rep: -5 },
+            outcome: "Risk avoided, but the startup secured backing from a competitor. Local business media accuses your bank of being overly conservative and unsupportive of green tech."
+          },
+          {
+            label: "Approve Syndicated 50% Co-Lending",
+            detail: "Lend ₹1,500 and invite a partner banking cooperative to shoulder the remaining half.",
+            impact: { money: +800, security: +2, trust: +6, rep: +7 },
+            outcome: "Smart risk sharing! Your bank captures solid interest income while protecting the balance sheet against patent devaluation."
+          }
+        ]
+      },
+      {
+        id: 3,
+        title: "Zero-Day Cyber Fraud Threat",
+        risk: "Critical",
+        description: "Cybersecurity telemetry detects unauthorized brute-force credential stuffing against your online banking API portal from distributed botnet IP addresses.",
+        options: [
+          {
+            label: "Trigger Full Lockdown & Mandatory Password Reset",
+            detail: "Temporarily shutter online banking for 2 hours to deploy zero-trust cryptographic patch.",
+            impact: { money: -600, security: +18, trust: -8, rep: +6 },
+            outcome: "Security perimeter reinforced without any customer breach! Some users complained about downtime, but independent security auditors praised your proactive defense."
+          },
+          {
+            label: "Deploy Silent Traffic Throttling in Background",
+            detail: "Attempt to filter bot traffic with rate limits while keeping the web portal online.",
+            impact: { money: -1200, security: -10, trust: -10, rep: -12 },
+            outcome: "The botnet bypassed the rate limits! Dozens of consumer accounts were compromised before staff could react. Customer trust plunges."
+          },
+          {
+            label: "Hire Specialized Cyber Incident Response Firm",
+            detail: "Contract elite third-party security consultants for an immediate emergency ₹800 retainer.",
+            impact: { money: -800, security: +14, trust: +5, rep: +9 },
+            outcome: "The specialized team neutralized the threat without web downtime and hardened your cloud infrastructure for the future."
+          }
+        ]
+      },
+      {
+        id: 4,
+        title: "Sudden Social Media Run Rumor",
+        risk: "High",
+        description: "Viral rumors on social media falsely claim that your bank has liquidity issues. Long withdrawal queues are forming at three major city branches.",
+        options: [
+          {
+            label: "Open Vaults & Cash Every Withdrawal With a Smile",
+            detail: "Extend branch hours, serve refreshments, and ensure all teller counters display abundant physical cash.",
+            impact: { money: -1000, security: 0, trust: +18, rep: +15 },
+            outcome: "Masterclass in banking confidence! Seeing that everyone got their money without hesitation, depositors calmed down and redeposited their cash within days."
+          },
+          {
+            label: "Impose Daily Withdrawal Caps of ₹1,000",
+            detail: "Restrict cash withdrawals immediately to preserve vault liquidity.",
+            impact: { money: -200, security: +4, trust: -22, rep: -20 },
+            outcome: "Panic! The withdrawal caps convinced anxious crowds that the rumor was true. News cameras broadcasted the mayhem outside branches."
+          },
+          {
+            label: "Broadcast Joint Statement with Banking Regulator",
+            detail: "Issue immediate verified audits on television and social media proving rock-solid capital reserves.",
+            impact: { money: -300, security: +4, trust: +12, rep: +12 },
+            outcome: "The official regulatory backing debunked the malicious rumors. Panic dispersed and regular operations resumed safely."
+          }
+        ]
+      },
+      {
+        id: 5,
+        title: "Hidden Fees Customer Outcry",
+        risk: "Low",
+        description: "A consumer watchdog group highlights that new automated account maintenance fees disproportionately penalize low-balance student and senior accounts.",
+        options: [
+          {
+            label: "Abolish Fees & Refund Affected Accounts",
+            detail: "Refund ₹500 in accumulated fees and launch a transparent zero-fee basic account tier.",
+            impact: { money: -500, security: 0, trust: +16, rep: +14 },
+            outcome: "Community praise! The bank gains thousands of new loyal young depositors and garners glowing editorial praise."
+          },
+          {
+            label: "Defend the Fee Schedule Publicly",
+            detail: "Release a statement explaining that account maintenance fees are necessary to cover modern cloud operations.",
+            impact: { money: +400, security: 0, trust: -14, rep: -12 },
+            outcome: "The bank maintained revenue, but suffered a sharp public relations backlash and boycott campaigns on campus campuses."
+          },
+          {
+            label: "Waive Fees for Students & Seniors Only",
+            detail: "Institute targeted exemptions while maintaining standard tariffs for commercial accounts.",
+            impact: { money: -150, security: 0, trust: +7, rep: +6 },
+            outcome: "A balanced compromise that quelled consumer advocacy concerns while protecting the bank's operational margin."
+          }
+        ]
+      },
+      {
+        id: 6,
+        title: "Synthetic KYC Identity Ring",
+        risk: "Medium",
+        description: "Internal compliance identifies 150 accounts opened with valid government tax IDs blended with fabricated names and addresses—a synthetic identity fraud ring.",
+        options: [
+          {
+            label: "Institute Video Biometric Re-verification",
+            detail: "Require live face-matching and biometric scans for all flagged digital profiles.",
+            impact: { money: -350, security: +15, trust: -3, rep: +8 },
+            outcome: "The fraudulent ring was completely purged! Legitimate customers experienced a slight friction, but welcomed the bank's integrity."
+          },
+          {
+            label: "Quietly Close Flagged Accounts",
+            detail: "Terminate accounts without notifying police or regulator to avoid bad publicity.",
+            impact: { money: -200, security: -4, trust: -5, rep: -8 },
+            outcome: "Regulatory penalty! The central bank discovered you closed accounts without filing mandatory Suspicious Activity Reports (SARs)."
+          },
+          {
+            label: "Cooperate with Central Cyber Police Sting",
+            detail: "Leave dummy honeypot accounts open to assist law enforcement in tracking the syndicate leaders.",
+            impact: { money: -100, security: +12, trust: +8, rep: +14 },
+            outcome: "Major victory! Police arrested the ringleaders. The national police commissioner personally thanked your institution at a press briefing."
+          }
+        ]
+      },
+      {
+        id: 7,
+        title: "Green Infrastructure Bond Opportunity",
+        risk: "Low",
+        description: "The municipal government offers your bank exclusive underwriting rights for a ₹2,000 solar grid infrastructure bond with guaranteed municipal backing.",
+        options: [
+          {
+            label: "Invest ₹2,000 for Exclusive Underwriting",
+            detail: "Become the sole lead underwriter for the city's signature renewable project.",
+            impact: { money: +1200, security: +4, trust: +10, rep: +16 },
+            outcome: "Stellar financial and public success! The bond was oversubscribed, providing strong yields and earning the bank an ESG excellence award."
+          },
+          {
+            label: "Invest Conservative ₹800 Tranche",
+            detail: "Take a modest position to test market appetite without locking up liquidity.",
+            impact: { money: +450, security: +2, trust: +5, rep: +6 },
+            outcome: "A safe, steady return. Balanced liquidity maintained with zero stress to cash flow."
+          },
+          {
+            label: "Decline Participation to Preserve Liquid Cash",
+            detail: "Keep all capital in overnight interbank lending reserves.",
+            impact: { money: +100, security: 0, trust: -4, rep: -6 },
+            outcome: "Safe liquidity, but lost opportunity. Other financial institutions took credit for financing the city's green revolution."
+          }
+        ]
+      },
+      {
+        id: 8,
+        title: "Core Banking Cloud Outage",
+        risk: "Critical",
+        description: "A primary data center power transformer explosion knocks out core database synchronization on payday afternoon. ATMs, cards, and mobile apps are offline.",
+        options: [
+          {
+            label: "Instantly Failover to Hot-Standby Disaster Recovery",
+            detail: "Execute immediate secondary cloud failover costing ₹600 in instant cloud spinning fees.",
+            impact: { money: -600, security: +10, trust: +10, rep: +10 },
+            outcome: "Seamless resilience! Operations restored within 7 minutes. Customers barely noticed, cementing trust in your technical infrastructure."
+          },
+          {
+            label: "Wait for Primary Data Center Physical Repair",
+            detail: "Estimated 3-hour downtime, but incurs no redundant cloud migration fees.",
+            impact: { money: 0, security: -8, trust: -18, rep: -16 },
+            outcome: "Huge customer uproar! Payday transactions failed during dinner hours. Store registers nationwide rejected your bank's debit cards."
+          },
+          {
+            label: "Activate Emergency Offline Card Authorization",
+            detail: "Allow local terminals to approve purchases up to ₹500 offline without real-time ledger checks.",
+            impact: { money: -750, security: -6, trust: +12, rep: +5 },
+            outcome: "Saved customer convenience! People bought their groceries, though a small percentage of overdraft slippage occurred."
+          }
+        ]
+      },
+      {
+        id: 9,
+        title: "Major Corporate Default Threat",
+        risk: "High",
+        description: "A major regional retail supermarket chain with a ₹2,500 commercial loan faces severe inventory cash crunches and threatens bankruptcy.",
+        options: [
+          {
+            label: "Restructure Debt with Equity Stake",
+            detail: "Extend loan terms by 3 years in exchange for 15% corporate shares and board seats.",
+            impact: { money: -400, security: +5, trust: +8, rep: +12 },
+            outcome: "Brilliant corporate turnaround! The retail chain restructured, retained 1,200 jobs, and your equity value grew significantly."
+          },
+          {
+            label: "Foreclose and Seize Commercial Assets Immediately",
+            detail: "Send legal teams to liquidate inventory and store buildings to recover cash right away.",
+            impact: { money: +1100, security: +2, trust: -14, rep: -14 },
+            outcome: "You recovered a portion of the loan, but mass employee layoffs sparked union protests outside your headquarters."
+          },
+          {
+            label: "Offer Bridge Loan with Strict Covenants",
+            detail: "Lend an extra ₹500 with mandated weekly financial oversight by your bank's auditors.",
+            impact: { money: +300, security: +6, trust: +4, rep: +5 },
+            outcome: "Calculated intervention. The supermarket stabilized supply chains and began steady repayment."
+          }
+        ]
+      },
+      {
+        id: 10,
+        title: "Global Financial Liquidity Crunch",
+        risk: "Critical",
+        description: "A sudden macroeconomic interest rate shock triggers panic across financial markets. Multiple mid-sized regional banks are facing insolvency.",
+        options: [
+          {
+            label: "Form a Resilient Community Stabilization Alliance",
+            detail: "Pledge ₹1,200 to establish an interbank liquidity pool supporting solvent local community lenders.",
+            impact: { money: -1200, security: +15, trust: +20, rep: +22 },
+            outcome: "Historic leadership! Your initiative halted contagion across the state. The Governor praises BANKSHIFT as a bedrock of societal stability."
+          },
+          {
+            label: "Hoard Cash Reserves & Call in All Short-term Credit",
+            detail: "Cancel lines of credit and park all available funds in central bank vaults.",
+            impact: { money: +800, security: +10, trust: -25, rep: -22 },
+            outcome: "Your bank survived with cash reserves, but dozens of local businesses starved for working capital collapsed, severely damaging community trust."
+          },
+          {
+            label: "Acquire Distressed Solvent Competitor at Deep Discount",
+            detail: "Deploy ₹1,500 to acquire a failing rival's high-value branch network and deposit base.",
+            impact: { money: +1500, security: +2, trust: +6, rep: +14 },
+            outcome: "Aggressive expansion! You absorbed 30 new branches and doubled your customer base, emerging as a regional financial powerhouse."
+          }
+        ]
+      }
+    ];
+
+    const gameState = {
+      round: 1,
+      totalRounds: 10,
+      money: 10000,
+      security: 70,
+      trust: 70,
+      reputation: 70,
+      selectedOptionIndex: 0, // 0-indexed internally, 1-indexed to user
+      stage: 'decision', // 'decision' | 'consequence' | 'gameover'
+      lastConsequence: null
+    };
+
+    const audio = new AccessibleAudioEngine();
+
+    // DOM Elements
+    const srAnnouncements = document.getElementById('sr-announcements');
+    const liveCaption = document.getElementById('live-caption-text');
+    const gameplayContainer = document.getElementById('main-game-content');
+    const ttsToggleBtn = document.getElementById('tts-toggle-btn');
+    const ttsStatusText = document.getElementById('tts-status-text');
+    const ttsIcon = document.getElementById('tts-icon');
+    const repeatBtn = document.getElementById('repeat-btn');
+    const helpBtn = document.getElementById('help-btn');
+    const helpModal = document.getElementById('help-modal');
+    const closeHelpBtn = document.getElementById('close-help-btn');
+
+    // Live Caption Updater (Deaf Player Support)
+    function updateLiveCaption(text) {
+      liveCaption.textContent = text;
+    }
+
+    // Screen Reader Announcer (Blind Player Support)
+    function announceSR(text) {
+      srAnnouncements.textContent = '';
+      setTimeout(() => {
+        srAnnouncements.textContent = text;
+      }, 50);
+    }
+
+    // Meter and Stat Visual Synchronizer
+    function renderStats(delta = null) {
+      const formatRupees = (val) => '₹' + Number(val).toLocaleString('en-IN');
+      
+      document.getElementById('val-money').textContent = formatRupees(gameState.money);
+      document.getElementById('val-security').textContent = Math.max(0, Math.min(100, gameState.security));
+      document.getElementById('val-trust').textContent = Math.max(0, Math.min(100, gameState.trust));
+      document.getElementById('val-reputation').textContent = Math.max(0, Math.min(100, gameState.reputation));
+
+      // Visual meter fills
+      const moneyPercent = Math.max(5, Math.min(100, (gameState.money / 20000) * 100));
+      document.getElementById('meter-money').style.width = moneyPercent + '%';
+      document.getElementById('meter-security').style.width = Math.max(0, Math.min(100, gameState.security)) + '%';
+      document.getElementById('meter-trust').style.width = Math.max(0, Math.min(100, gameState.trust)) + '%';
+      document.getElementById('meter-reputation').style.width = Math.max(0, Math.min(100, gameState.reputation)) + '%';
+
+      // Update stat deltas
+      const stats = [
+        { id: 'money', key: 'money', format: (v) => (v >= 0 ? '+₹' : '-₹') + Math.abs(v).toLocaleString('en-IN') },
+        { id: 'security', key: 'security', format: (v) => (v >= 0 ? '+' : '') + v },
+        { id: 'trust', key: 'trust', format: (v) => (v >= 0 ? '+' : '') + v },
+        { id: 'reputation', key: 'rep', format: (v) => (v >= 0 ? '+' : '') + v }
+      ];
+
+      stats.forEach(item => {
+        const deltaEl = document.getElementById(`delta-${item.id}`);
+        const cardEl = document.getElementById(`card-${item.id}`);
+        
+        if (delta && delta[item.key] !== undefined && delta[item.key] !== 0) {
+          const val = delta[item.key];
+          deltaEl.textContent = item.format(val);
+          deltaEl.className = 'stat-delta ' + (val > 0 ? 'positive' : 'negative');
+          cardEl.classList.remove('updated');
+          void cardEl.offsetWidth; // trigger reflow
+          cardEl.classList.add('updated');
+        } else {
+          deltaEl.className = 'stat-delta zero';
+        }
+      });
+    }
+
+    function renderCurrentRound() {
+      gameState.stage = 'decision';
+      gameState.selectedOptionIndex = 0; // Default select first choice
+
+      const scenario = BANKING_SCENARIOS[gameState.round - 1];
+      audio.playTone('round');
+
+      let riskClass = 'risk-low';
+      if (scenario.risk === 'Medium') riskClass = 'risk-medium';
+      if (scenario.risk === 'High') riskClass = 'risk-high';
+      if (scenario.risk === 'Critical') riskClass = 'risk-critical';
+
+      let optionsHtml = '';
+      scenario.options.forEach((opt, idx) => {
+        const isSelected = idx === gameState.selectedOptionIndex;
+        optionsHtml += `
+          <button 
+            type="button"
+            class="option-card ${isSelected ? 'selected' : ''}" 
+            id="opt-btn-${idx}"
+            onclick="selectOption(${idx})"
+            role="radio"
+            aria-checked="${isSelected}"
+            tabindex="0"
+            aria-label="Option ${idx + 1}: ${opt.label}. ${opt.detail}"
+          >
+            <div class="option-number-badge">${idx + 1}</div>
+            <div class="option-text-container">
+              <div class="option-label">${opt.label}</div>
+              <div class="option-tradeoff">${opt.detail}</div>
+            </div>
+          </button>
+        `;
+      });
+
+      gameplayContainer.innerHTML = `
+        <div class="round-meta-header">
+          <div class="round-pill" aria-label="Round ${gameState.round} of ${gameState.totalRounds}">
+            ROUND ${gameState.round} / ${gameState.totalRounds}
+          </div>
+          <div class="risk-badge ${riskClass}" aria-label="Threat Level: ${scenario.risk}">
+            Risk Level: ${scenario.risk}
+          </div>
+        </div>
+
+        <div>
+          <h2 class="scenario-title" id="scenario-heading">${scenario.title}</h2>
+          <p class="scenario-description" style="margin-top: 0.6rem;">${scenario.description}</p>
+        </div>
+
+        <div class="options-grid" role="radiogroup" aria-labelledby="scenario-heading">
+          ${optionsHtml}
+        </div>
+
+        <div class="controls-footer">
+          <div style="font-size: 0.9rem; color: var(--text-muted);">
+            Press <span class="key-badge">1</span>–<span class="key-badge">${scenario.options.length}</span> to select, then <span class="key-badge">Enter</span> to confirm.
+          </div>
+          <button id="confirm-decision-btn" class="confirm-btn" onclick="confirmSelection()">
+            <span>Confirm Decision</span>
+            <span class="key-badge" style="background: rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.4);">Enter</span>
+          </button>
+        </div>
+      `;
+
+      // Build comprehensive spoken script for blind audio narration
+      narrateRoundIntroduction(scenario);
+    }
+
+    function narrateRoundIntroduction(scenario) {
+      let speechText = `Round ${gameState.round} of ${gameState.totalRounds}. `;
+      speechText += `Capital: ${gameState.money} rupees. `;
+      speechText += `Security: ${gameState.security}. `;
+      speechText += `Trust: ${gameState.trust}. `;
+      speechText += `Reputation: ${gameState.reputation}. `;
+      speechText += `Situation: ${scenario.title}. Risk level: ${scenario.risk}. `;
+      speechText += `${scenario.description} `;
+
+      scenario.options.forEach((opt, idx) => {
+        speechText += `Option ${idx + 1}: ${opt.label}. `;
+      });
+
+      speechText += `Press 1 to ${scenario.options.length} to choose, then press Enter to confirm.`;
+
+      audio.speak(speechText);
+    }
+
+    /* Option Selection Logic */
+    window.selectOption = function(idx) {
+      const scenario = BANKING_SCENARIOS[gameState.round - 1];
+      if (idx < 0 || idx >= scenario.options.length) return;
+
+      gameState.selectedOptionIndex = idx;
+      audio.playTone('select');
+
+      // Update visual active classes
+      for (let i = 0; i < scenario.options.length; i++) {
+        const btn = document.getElementById(`opt-btn-${i}`);
+        if (btn) {
+          if (i === idx) {
+            btn.classList.add('selected');
+            btn.setAttribute('aria-checked', 'true');
+            btn.focus();
+          } else {
+            btn.classList.remove('selected');
+            btn.setAttribute('aria-checked', 'false');
+          }
+        }
+      }
+
+      // Explicit verbal confirmation for blind players
+      const selectedOpt = scenario.options[idx];
+      const announcement = `Option ${idx + 1} selected: ${selectedOpt.label}. Press Enter to confirm.`;
+      audio.speak(announcement);
+    };
+
+    window.confirmSelection = function() {
+      if (gameState.stage !== 'decision') return;
+
+      const scenario = BANKING_SCENARIOS[gameState.round - 1];
+      const choice = scenario.options[gameState.selectedOptionIndex];
+
+      audio.playTone('confirm');
+      gameState.stage = 'consequence';
+
+      // Apply resource impacts
+      gameState.money = Math.max(0, gameState.money + choice.impact.money);
+      gameState.security = Math.max(0, Math.min(100, gameState.security + choice.impact.security));
+      gameState.trust = Math.max(0, Math.min(100, gameState.trust + choice.impact.trust));
+      gameState.reputation = Math.max(0, Math.min(100, gameState.reputation + choice.impact.rep));
+
+      // Refresh Stats UI with delta animations
+      renderStats(choice.impact);
+
+      // Create Impact tags
+      const formatPill = (label, val, unit = '') => {
+        if (val === 0) return `<span class="impact-pill impact-neutral">${label}: No change</span>`;
+        const isPos = val > 0;
+        const sign = isPos ? '+' : '';
+        return `
+          <span class="impact-pill ${isPos ? 'impact-positive' : 'impact-negative'}">
+            ${label}: ${sign}${unit === '₹' ? (isPos ? '+₹' : '-₹') + Math.abs(val).toLocaleString('en-IN') : sign + val + unit}
+          </span>
+        `;
+      };
+
+      const impactsHtml = `
+        <div class="impact-badges-container" aria-label="Impact Summary">
+          ${formatPill('Money', choice.impact.money, '₹')}
+          ${formatPill('Security', choice.impact.security)}
+          ${formatPill('Customer Trust', choice.impact.trust)}
+          ${formatPill('Reputation', choice.impact.rep)}
+        </div>
+      `;
+
+      gameplayContainer.innerHTML = `
+        <div class="round-meta-header">
+          <div class="round-pill">ROUND ${gameState.round} / ${gameState.totalRounds} — OUTCOME</div>
+          <div style="font-weight: 700; color: #94a3b8;">Choice: Option ${gameState.selectedOptionIndex + 1}</div>
+        </div>
+
+        <div class="resolution-card">
+          <div class="resolution-header">
+            <span>📋</span>
+            <span>Decision Outcome: ${choice.label}</span>
+          </div>
+
+          <p class="resolution-narrative">${choice.outcome}</p>
+
+          ${impactsHtml}
+
+          <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
+            <button id="next-round-btn" class="confirm-btn" onclick="nextRound()" autofocus>
+              <span>${gameState.round < gameState.totalRounds ? 'Proceed to Next Round' : 'View Final Bank Evaluation'}</span>
+              <span class="key-badge" style="background: rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.4);">N</span>
+            </button>
+          </div>
+        </div>
+      `;
+
+      // Announce consequences clearly for blind players
+      let consequenceSpeech = `Decision confirmed. Outcome: ${choice.outcome} `;
+      consequenceSpeech += `Impact: Capital ${choice.impact.money >= 0 ? 'plus ' : 'minus '}${Math.abs(choice.impact.money)} rupees. `;
+      consequenceSpeech += `Security ${choice.impact.security >= 0 ? 'plus ' : ''}${choice.impact.security}. `;
+      consequenceSpeech += `Trust ${choice.impact.trust >= 0 ? 'plus ' : ''}${choice.impact.trust}. `;
+      consequenceSpeech += `Reputation ${choice.impact.rep >= 0 ? 'plus ' : ''}${choice.impact.rep}. `;
+      consequenceSpeech += `Current resources: Capital ${gameState.money} rupees. Security ${gameState.security}. Trust ${gameState.trust}. Reputation ${gameState.reputation}. `;
+      consequenceSpeech += gameState.round < gameState.totalRounds 
+        ? "Press N or Enter to proceed to the next round." 
+        : "Press N or Enter to see your final bank evaluation.";
+
+      audio.speak(consequenceSpeech);
+
+      // Focus the next button for immediate keyboard Enter usage
+      const nextBtn = document.getElementById('next-round-btn');
+      if (nextBtn) nextBtn.focus();
+    };
+
+    /* Next Round Progression */
+    window.nextRound = function() {
+      if (gameState.round < gameState.totalRounds) {
+        gameState.round++;
+        renderStats(); // clear deltas
+        renderCurrentRound();
+      } else {
+        renderGameOverScreen();
+      }
+    };
+
+    function renderGameOverScreen() {
+      gameState.stage = 'gameover';
+      audio.playTone('confirm');
+
+      // Comprehensive score calculation
+      // Formula weights financial health alongside trust, integrity & safety
+      const moneyScore = Math.floor(gameState.money / 100);
+      const compositeScore = moneyScore + (gameState.security * 2) + (gameState.trust * 2.5) + (gameState.reputation * 2);
+      const finalScore = Math.round(compositeScore);
+
+      let evaluationTitle = "";
+      let summaryText = "";
+
+      if (gameState.trust >= 80 && gameState.security >= 75 && gameState.money >= 9000) {
+        evaluationTitle = "Distinguished Guardian of Public Finance";
+        summaryText = "Extraordinary governance! You masterfully balanced cyber defense, customer transparency, and ethical capital growth. Your bank is heralded nationwide as an untouchable paragon of modern trust.";
+      } else if (gameState.money > 14000 && gameState.trust < 50) {
+        evaluationTitle = "High-Yield Mercenary Financier";
+        summaryText = "You amassed tremendous corporate capital, but alienated grassroot customer trust. While your shareholders applaud short-term profit sheets, regulatory watchdogs have opened rigorous compliance audits.";
+      } else if (gameState.security < 45 || gameState.trust < 40) {
+        evaluationTitle = "Distressed Financial Institution";
+        summaryText = "Severe operational compromises and fractured depositor trust triggered serious capital flight. Emergency recapitalization from regulatory reserves was required to prevent outright insolvency.";
+      } else {
+        evaluationTitle = "Prudent Banking Custodian";
+        summaryText = "You navigated turbulent market crises with sound stewardship. While challenging trade-offs required periodic compromises, your institution emerged stable, resilient, and well-positioned for future expansion.";
+      }
+
+      gameplayContainer.innerHTML = `
+        <div class="gameover-container">
+          <div class="gameover-badge">Ten-Round Challenge Complete</div>
+          <h2 class="final-title">Bank Management Evaluation</h2>
+
+          <div class="final-score-box">
+            <div class="final-score-label">Overall Performance Rating</div>
+            <div class="final-score-num">${finalScore}</div>
+          </div>
+
+          <div>
+            <div class="final-verdict-title">${evaluationTitle}</div>
+            <p class="final-summary-text">${summaryText}</p>
+          </div>
+
+          <div class="final-stats-grid">
+            <div class="final-stat-box">
+              <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Ending Capital</div>
+              <div class="final-stat-val" style="color: var(--stat-money);">₹${gameState.money.toLocaleString('en-IN')}</div>
+            </div>
+            <div class="final-stat-box">
+              <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Security Rating</div>
+              <div class="final-stat-val" style="color: var(--stat-security);">${gameState.security}/100</div>
+            </div>
+            <div class="final-stat-box">
+              <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Customer Trust</div>
+              <div class="final-stat-val" style="color: var(--stat-trust);">${gameState.trust}/100</div>
+            </div>
+            <div class="final-stat-box">
+              <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Reputation</div>
+              <div class="final-stat-val" style="color: var(--stat-reputation);">${gameState.reputation}/100</div>
+            </div>
+          </div>
+
+          <button id="restart-game-btn" class="confirm-btn" onclick="restartGame()" style="padding: 1rem 2.2rem; font-size: 1.1rem;" autofocus>
+            <span>Play Again</span>
+            <span class="key-badge" style="background: rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.4);">Enter</span>
+          </button>
+        </div>
+      `;
+
+      let finalSpeech = `The banking challenge is complete. `;
+      finalSpeech += `Your final performance rating is ${finalScore}. `;
+      finalSpeech += `Evaluation: ${evaluationTitle}. `;
+      finalSpeech += `${summaryText} `;
+      finalSpeech += `Final statistics: Capital ${gameState.money} rupees. Security ${gameState.security}. Trust ${gameState.trust}. Reputation ${gameState.reputation}. `;
+      finalSpeech += `Press Enter or N to restart the game.`;
+
+      audio.speak(finalSpeech);
+
+      const restartBtn = document.getElementById('restart-game-btn');
+      if (restartBtn) restartBtn.focus();
+    }
+
+    /* Game Restart */
+    window.restartGame = function() {
+      audio.stopSpeech();
+      gameState.round = 1;
+      gameState.money = 10000;
+      gameState.security = 70;
+      gameState.trust = 70;
+      gameState.reputation = 70;
+      gameState.selectedOptionIndex = 0;
+      gameState.stage = 'decision';
+      renderStats();
+      renderCurrentRound();
+    };
+
+    window.addEventListener('keydown', (e) => {
+      // Don't intercept shortcuts if user is inside an input (none exist, but standard practice)
+      if (['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase())) {
+        return;
+      }
+
+      const key = e.key;
+
+      // Handle Help Modal toggles (Esc or H)
+      if (key === 'Escape') {
+        if (helpModal.style.display !== 'none') {
+          closeHelp();
+          return;
+        }
+      }
+      if (key === 'h' || key === 'H') {
+        toggleHelp();
+        return;
+      }
+
+      // If Help Modal is open, do not execute game shortcuts
+      if (helpModal.style.display !== 'none') return;
+
+      // Speech Toggle (S key)
+      if (key === 's' || key === 'S') {
+        e.preventDefault();
+        toggleSpeechHandler();
+        return;
+      }
+
+      // Repeat current information (R key)
+      if (key === 'r' || key === 'R') {
+        e.preventDefault();
+        repeatInformation();
+        return;
+      }
+
+      // In Decision Stage:
+      if (gameState.stage === 'decision') {
+        const scenario = BANKING_SCENARIOS[gameState.round - 1];
+        
+        // Option 1-4 selection
+        if (['1', '2', '3', '4'].includes(key)) {
+          const optIdx = parseInt(key, 10) - 1;
+          if (optIdx < scenario.options.length) {
+            e.preventDefault();
+            selectOption(optIdx);
+          }
+          return;
+        }
+
+        // Confirm selection with Enter or Space
+        if (key === 'Enter' || key === ' ') {
+          e.preventDefault();
+          confirmSelection();
+          return;
+        }
+      }
+
+      // In Consequence Stage:
+      if (gameState.stage === 'consequence') {
+        if (key === 'n' || key === 'N' || key === 'Enter' || key === ' ') {
+          e.preventDefault();
+          nextRound();
+          return;
+        }
+      }
+
+      // In Game Over Stage:
+      if (gameState.stage === 'gameover') {
+        if (key === 'Enter' || key === ' ' || key === 'n' || key === 'N') {
+          e.preventDefault();
+          restartGame();
+          return;
+        }
+      }
+    });
+
+    /* Toolbar Event Handlers */
+    function toggleSpeechHandler() {
+      const enabled = audio.toggleSpeech();
+      ttsStatusText.textContent = enabled ? 'ON' : 'OFF';
+      ttsIcon.textContent = enabled ? '🔊' : '🔇';
+      ttsToggleBtn.classList.toggle('active', enabled);
+      ttsToggleBtn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+      
+      const msg = enabled ? "Speech narration enabled." : "Speech narration muted.";
+      updateLiveCaption(msg);
+      announceSR(msg);
+      if (enabled) {
+        audio.speak("Speech narration enabled.");
+      }
+    }
+
+    function repeatInformation() {
+      if (gameState.stage === 'decision') {
+        const scenario = BANKING_SCENARIOS[gameState.round - 1];
+        narrateRoundIntroduction(scenario);
+      } else if (gameState.stage === 'consequence') {
+        const scenario = BANKING_SCENARIOS[gameState.round - 1];
+        const choice = scenario.options[gameState.selectedOptionIndex];
+        let repText = `Outcome: ${choice.outcome} Capital is ${gameState.money} rupees. Security is ${gameState.security}. Trust is ${gameState.trust}. Reputation is ${gameState.reputation}. Press N to proceed.`;
+        audio.speak(repText);
+      } else if (gameState.stage === 'gameover') {
+        audio.speak("Challenge complete. Press Enter to restart.");
+      }
+    }
+
+    function toggleHelp() {
+      if (helpModal.style.display === 'none') {
+        helpModal.style.display = 'flex';
+        closeHelpBtn.focus();
+        audio.speak("Help dialog opened. Use number keys 1 through 4 to select options, Enter to confirm, N for next round, R to repeat, and Escape to close help.");
+      } else {
+        closeHelp();
+      }
+    }
+
+    function closeHelp() {
+      helpModal.style.display = 'none';
+      audio.speak("Help dialog closed.");
+      // Return focus to active element
+      if (gameState.stage === 'decision') {
+        const currentBtn = document.getElementById(`opt-btn-${gameState.selectedOptionIndex}`);
+        if (currentBtn) currentBtn.focus();
+      }
+    }
+
+    ttsToggleBtn.addEventListener('click', toggleSpeechHandler);
+    repeatBtn.addEventListener('click', repeatInformation);
+    helpBtn.addEventListener('click', toggleHelp);
+    closeHelpBtn.addEventListener('click', closeHelp);
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderStats();
+      renderCurrentRound();
+    });
+  </script>
+</body>
+</html>
